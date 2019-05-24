@@ -66,11 +66,6 @@
   <ItemGroup>
     <Compile Include="BowlOutDeliveries.cs" />
     <Compile Include="By.cs" />
-    <Compile Include="CricketDataSet.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>CricketDataSet.xsd</DependentUpon>
-    </Compile>
     <Compile Include="Deliveries.cs" />
     <Compile Include="Extras.cs" />
     <Compile Include="Form1.cs">
@@ -107,17 +102,6 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <None Include="CricketDataSet.xsc">
-      <DependentUpon>CricketDataSet.xsd</DependentUpon>
-    </None>
-    <None Include="CricketDataSet.xsd">
-      <Generator>MSDataSetGenerator</Generator>
-      <LastGenOutput>CricketDataSet.Designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
-    <None Include="CricketDataSet.xss">
-      <DependentUpon>CricketDataSet.xsd</DependentUpon>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -131,15 +115,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Cricket.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Cricket_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>Cricket.mdf</DependentUpon>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
