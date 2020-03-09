@@ -1,0 +1,221 @@
+1. List Upcomming Matches. (3 Days) with Team 1/ Team 2 / Type of Match/ Date with a countdown timer and sorted in acending order.
+2. Fetch Squad for both teams grouped under Batsman, Allrounder, Wicketkeeper and Bowler.
+3. Fetch Player Form details as per the format, fantasy points, matches played, avg points, Player style, type etc.
+4. Auto Option for auto selecting the player and create squad
+5. let users select players and then create squad
+6. Captian and vice captian predictions.
+=====================================================================================================================================
+
+T20,ODI, test, First class
+
+
+put weight on players matching the criteria
+
+Get data by venue. 
+Venue
+{
+	Matches,
+	Total Runs,
+	Lowest Score
+	HS,
+	1s,
+	2s,
+	3s,	
+	6s,
+	4s,
+	dots,	
+	strike rate, 
+	avg,
+	catches,
+	stumps,
+	Run Outs
+	100,
+	50,
+	Wkts,
+	Balls bolwed, 
+	BBI,
+	BBM,
+	Ave,
+	Econ,
+	SR,
+	4w,
+	5w,
+	10w,
+	ducks,
+	Maiden overs
+}
+
+Venue Filters
+{
+	Data for Batting First and Second, {All}
+	Data for Spin Bowlers, Fast Bowlers and medium Pacers, {All}
+	Left Arm bowler data, {All}
+	Right arm bowler data, {All}
+	Left hand batsman, {All}
+	Right hand batsman, {All}
+	Data for Top 3 batsman, middle order batsman {All}
+	Long boundries or Short boundries, {Manual}
+	Ratio of Boundries vs runs vs Dots
+	Pitch type Bowling or batting ==> Avg score and wickets
+	Day Night matches data and Day matchers data,{All}
+	Runs per match grouping, 150, 200, 250, 300 
+	Wickets per match grouping, 5, 10, 15, 20
+	Year wise grouping
+	Per N match
+	format, {not all} mutually exclusive
+	league {not all} mutuall exclusive
+}
+
+Groupings:-
+Yearwise all data
+Last N matches wishe all data
+Run wise number of matches
+Wicket wise number of matches
+number of 4 wise matches
+number of 6 wise matcehs
+
+
+seggregate filters vs grouping
+
+Polygon data with row data for each combination of filter
+upon clicking on 
+		
+	
+Batting wicket or bowling, or equal, 
+supports hard hitters or elegant players, 
+supports fast bowlers or spin bowlers or deceptive bowlers. 
+
+}
+
+By Player.
+{
+	Performmance in current series
+	Performance in Previous series
+	Performance in last 3 series
+	Performance in last 5 series
+	Performance in last N matches
+	=============================================================
+	Performance Against fast bowler, medium pacer and spin bowler
+	Performance Against Right Arm bowler / Left Arm bowler
+	=============================================================
+	Performance Against batsman Arm strength and weakness
+	=============================================================
+	Performance Against batsman Type of batsman
+	=============================================================
+	Data while defending and chasing
+	=============================================================
+	Data for a Venue
+	=============================================================
+	Data for a Format
+	=============================================================
+	Data for a League
+	=============================================================
+	Data against Team
+	=============================================================
+	Data in day vs Day night match
+	=============================================================
+	Yearwise performance
+	=============================================================
+	group Runs based  on 10s
+	=============================================================
+	Runs based on balls, 10, 20, 30 40 
+	=============================================================
+	Wickets Based on Out Type
+	=============================================================
+	Wickets per match grouping
+	=============================================================
+}
+
+Player
+{
+	Team,
+	Role,
+	Order,
+	Batting Style,
+	Batting Arm,
+	Bowling Style,	
+	Matches,
+====================
+	Innings,
+	Not Outs,
+	Runs,
+	High Score,
+	Lowest Score,
+	Ducks,
+	6s,
+	4s,
+	3s,
+	2s,
+	1s,
+	dots,	
+	Bals Faced,
+	Strike rate,
+	Avg,
+	100s,
+	50s,
+	30s,
+======================
+	Catches,
+	Run outs,
+======================
+	Stumpings,
+======================
+	Wickets,
+	Balls,
+	Runs,
+	BBI,
+	BBM,
+	Avg,
+	Economy,
+	SR,
+	4w,
+	5w,
+	10 w,
+	0 wickets,
+	dots
+	Maidens
+}
+
+for Players (Filter dates, based on series), Venue, Player Performance at venue, league, group by match
+Expose Player Vs Player
+Expose Player compare Player
+Expose Team vs Team
+Ranking Player using Player vs Player and Performance
+
+===============================================================================================================
+
+Player vs Player (i.e Batsman vs Bowler) Order them
+give points to players
+
+Give preference to players who played well at that venue against same team or other teams.
+
+for sorting, consider, strike rate recently, avg , no of sixes , no of 4s, less number of dots, batting order
+
+for wicketkeeper=> always compare stumps and catches
+
+fielders having catches and runouts
+
+Run players vs Player ==> batsman of team 1 vs Bowlers and allrounders of team 2 sort based on criteria
+
+Current Series performance. more preference to more number of games and better performance
+
+Day night match consideration
+
+
+===============================================================================================================
+
+Product Ideas:
+
+1. Dream11 team generator:
+2. Analytics product website for Users (Fantasy league team generator)
+3. Analytics Apis
+
+
+Database design
+Data ingestion service (Existing data and upcomming matche)
+Expose WebApis 
+
+Algorithm for fantasy team generator
+
+
+  
