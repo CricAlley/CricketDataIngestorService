@@ -116,9 +116,13 @@ namespace CricketDataIngester
                 return _players[player];
             }
 
-            Player foundPlayer = null;
+            var list = new List<string> {"A Singh", "Jaskaran Singh", "R Sharma", "N Saini", "R Shukla" };
+            if (list.Any(p => p == player))
+            {
+                return null;
+            }
 
-            player = player.Replace(" (sub)", "");
+            Player foundPlayer = null;
 
             var names = player.Split(' ');
 
@@ -127,6 +131,8 @@ namespace CricketDataIngester
 
             var lastName = names.Last();
             var firstName = names.First();
+            bool isInitials = firstName.ToCharArray().All(c => c == char.ToUpper(c));
+
             var middleName = string.Empty;
             if (names.Length > 2)
             {
@@ -137,51 +143,81 @@ namespace CricketDataIngester
             {
                 var dbPlayers = context.Players.Where(player1 => player1.FullName.ToUpper().Contains(lastName.ToUpper()) && player1.IsActive);
 
-                foreach (var dbPlayer in dbPlayers)
+                if (isInitials)
                 {
-                    var dbNames = dbPlayer.FullName.Split(' ');
-                    var dbFirstName = dbPlayer.Name.Split(' ').First();
-                    var dbFFirstName = dbPlayer.FullName.Split(' ').First();
-                    var dbLastName = dbPlayer.Name.Split(' ').Last();
-                    var dbFLastName = dbPlayer.FullName.Split(' ').Last();
-                    var isfound = false;
+                    dbPlayers = context.Players.Where(player1 => player1.FullName.ToUpper().Contains(lastName.ToUpper()) && player1.IsActive);
+                    
+                    foreach (var dbPlayer in dbPlayers)
+                    {
+                        var dbNames = dbPlayer.FullName.Split(' ');
+                        var dbLastName = dbNames.Last();
+                        var dbFirstName = dbNames.First();
+                        var isDbNameInitials = dbFirstName.ToCharArray().All(c => c == char.ToUpper(c));
 
-                    if ((firstName.ToUpper() == dbFirstName.ToUpper() || firstName.ToUpper() == dbFFirstName.ToUpper()) && (dbLastName.ToUpper() == lastName.ToUpper() || dbFLastName.ToUpper() == lastName.ToUpper()))
-                    {
-                        isfound = true;
-                    }
-                    else if (dbLastName.ToUpper() == lastName.ToUpper() || dbFLastName.ToUpper() == lastName.ToUpper())
-                    {
-                        isfound = true;
-                        var j = 0;
-                        for (var i = 0; i < firstName.Length; i++ , j++)
+                        var isfound = false;
+                        if (dbLastName.ToUpper() == lastName.ToUpper())
                         {
+                            isfound = true;
+                            var j = 0;
+                            for (var i = 0; i < firstName.Length; i++, j++)
+                            {
 
-                            if (dbNames[i][0] != firstName[i])
+                                if (dbNames[i][0] != firstName[i])
+                                {
+                                    isfound = false;
+                                    break;
+                                }
+                            }
+
+                            if (!string.IsNullOrWhiteSpace(middleName) && dbNames[j].ToUpper() != middleName.ToUpper())
                             {
                                 isfound = false;
-                                break;
+                            }
+
+                            if (isDbNameInitials)
+                            {
+                                isfound = dbFirstName == firstName;
                             }
                         }
 
-                        if (!string.IsNullOrWhiteSpace(middleName) && dbNames[j] != middleName)
+                        if (isfound)
                         {
-                            isfound = false;
+                            _players.Add(player, dbPlayer);
+                            foundPlayer = dbPlayer;
+                        }
+                    }
+                    if (foundPlayer == null)
+                    {
+                        throw new Exception();
+                    }
+                }
+                else
+                {
+                    dbPlayers = context.Players.Where(player1 => player1.FullName.ToUpper().Contains(firstName.ToUpper()) && player1.IsActive);
+
+                    foreach (var dbPlayer in dbPlayers)
+                    {
+                        var dbNames = dbPlayer.Name.Split(' ');
+                        var dbFirstName = dbNames.First();
+                        var dbLastName = dbNames.Last();
+                        var dbMiddleName = string.Empty;
+                        if (dbNames.Length > 2)
+                        {
+                            dbMiddleName = dbNames.Skip(1).FirstOrDefault();
+                        }
+
+                        if (firstName.ToUpper() == dbFirstName.ToUpper() && lastName.ToUpper() == dbLastName.ToUpper() && middleName?.ToUpper() == dbMiddleName?.ToUpper())
+                        {
+                            _players.Add(player, dbPlayer);
+                            foundPlayer = dbPlayer;
                         }
                     }
 
-                    if (isfound)
+                    if (foundPlayer == null)
                     {
-                        _players.Add(player, dbPlayer);
-                        foundPlayer = dbPlayer;
+                        throw new Exception();
                     }
                 }
-
-                if (foundPlayer == null)
-                {
-                    throw new Exception();
-                }
-
                 return foundPlayer;
             }
         }
