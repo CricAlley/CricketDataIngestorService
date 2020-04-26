@@ -19,7 +19,7 @@ namespace CricketDataIngester
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            tbxFolderPath.Text = @"D:\Projects\Data";
+            tbxFolderPath.Text = @"D:\Projects\Data\11-04-2020";
         }
 
         private void FolderBrowserDialog1_HelpRequest(object sender, EventArgs e)
@@ -110,6 +110,7 @@ namespace CricketDataIngester
 
         private Player GetPlayer(string player)
         {
+            player = player.Replace(" (sub)", "");
             if (_players.ContainsKey(player))
             {
                 return _players[player];
@@ -117,37 +118,56 @@ namespace CricketDataIngester
 
             Player foundPlayer = null;
 
+            player = player.Replace(" (sub)", "");
+
             var names = player.Split(' ');
 
-            if(names.Length>2)
-                throw new Exception();
+            //if(names.Length>2)
+            //    throw new Exception();
 
             var lastName = names.Last();
             var firstName = names.First();
-            var initials = firstName.Split();
+            var middleName = string.Empty;
+            if (names.Length > 2)
+            {
+                middleName = names.Skip(1).First();
+            }
 
             using (var context = new PlayerContext())
             {
-                var dbPlayers = context.Players.Where(player1 => player1.FullName.ToUpper().Contains(lastName.ToUpper()));
+                var dbPlayers = context.Players.Where(player1 => player1.FullName.ToUpper().Contains(lastName.ToUpper()) && player1.IsActive);
 
                 foreach (var dbPlayer in dbPlayers)
                 {
                     var dbNames = dbPlayer.FullName.Split(' ');
-                    var isfound = true;
-                    if (dbNames.Last().ToUpper() == lastName.ToUpper())
+                    var dbFirstName = dbPlayer.Name.Split(' ').First();
+                    var dbFFirstName = dbPlayer.FullName.Split(' ').First();
+                    var dbLastName = dbPlayer.Name.Split(' ').Last();
+                    var dbFLastName = dbPlayer.FullName.Split(' ').Last();
+                    var isfound = false;
+
+                    if ((firstName.ToUpper() == dbFirstName.ToUpper() || firstName.ToUpper() == dbFFirstName.ToUpper()) && (dbLastName.ToUpper() == lastName.ToUpper() || dbFLastName.ToUpper() == lastName.ToUpper()))
                     {
-                        for (var i = 0; i < initials.Length; i++)
+                        isfound = true;
+                    }
+                    else if (dbLastName.ToUpper() == lastName.ToUpper() || dbFLastName.ToUpper() == lastName.ToUpper())
+                    {
+                        isfound = true;
+                        var j = 0;
+                        for (var i = 0; i < firstName.Length; i++ , j++)
                         {
-                            if (dbNames[i][0] != initials[i][0])
+
+                            if (dbNames[i][0] != firstName[i])
                             {
                                 isfound = false;
                                 break;
                             }
                         }
-                    }
-                    else
-                    {
-                        isfound = false;
+
+                        if (!string.IsNullOrWhiteSpace(middleName) && dbNames[j] != middleName)
+                        {
+                            isfound = false;
+                        }
                     }
 
                     if (isfound)

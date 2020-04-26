@@ -16,5 +16,6 @@ namespace CricketDataIngester.Data
         public string BattingStyle { get; set; }
         public string BowlingStyle { get; set; }
         public int CricInfoId { get; set; }
+        public bool IsActive { get; set; }
     }
 }
