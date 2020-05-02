@@ -67,34 +67,19 @@ namespace CricketDataIngester
                     
                     var players = match.GetPlayers();
 
+                    // Update Cricsheet name in DB
                     foreach (var player in players)
                     {
-                        var dbPlayer = GetPlayer(player);
+                        UpdatePlayer(player);
+                    }
+
+                    foreach (var matchInning in match.Innings)
+                    {
+                        
                     }
 
 
-                    //foreach (var item in list)
-                    //{
-                    //    var oldValue = " (sub)";
-
-                    //    if (item.Contains(oldValue))
-                    //    {
-                    //        var str = item.Replace(oldValue, string.Empty);
-
-                    //        if (!players.Contains(str))
-                    //        {
-                    //            players.Add(str);
-                    //        }
-                    //    }
-                    //    else
-                    //    {
-                    //        if (!players.Contains(item))
-                    //        {
-                    //            players.Add(item);
-                    //        }
-                    //    }
-
-                    //}
+                    //ListPlayers(players);
 
                     progressBar1.PerformStep();
 
@@ -108,26 +93,49 @@ namespace CricketDataIngester
 
         }
 
-        private Player GetPlayer(string player)
+        private static void ListPlayers(List<string> players)
+        {
+            //foreach (var item in list)
+            //{
+            //    var oldValue = " (sub)";
+
+            //    if (item.Contains(oldValue))
+            //    {
+            //        var str = item.Replace(oldValue, string.Empty);
+
+            //        if (!players.Contains(str))
+            //        {
+            //            players.Add(str);
+            //        }
+            //    }
+            //    else
+            //    {
+            //        if (!players.Contains(item))
+            //        {
+            //            players.Add(item);
+            //        }
+            //    }
+            //}
+        }
+
+        private void UpdatePlayer(string player)
         {
             player = player.Replace(" (sub)", "");
             if (_players.ContainsKey(player))
             {
-                return _players[player];
+                return ;
             }
 
             var list = new List<string> {"A Singh", "Jaskaran Singh", "R Sharma", "N Saini", "R Shukla" };
             if (list.Any(p => p == player))
             {
-                return null;
+                return ;
             }
 
             Player foundPlayer = null;
 
             var names = player.Split(' ');
 
-            //if(names.Length>2)
-            //    throw new Exception();
 
             var lastName = names.Last();
             var firstName = names.First();
@@ -141,11 +149,10 @@ namespace CricketDataIngester
 
             using (var context = new PlayerContext())
             {
-                var dbPlayers = context.Players.Where(player1 => player1.FullName.ToUpper().Contains(lastName.ToUpper()) && player1.IsActive);
 
                 if (isInitials)
                 {
-                    dbPlayers = context.Players.Where(player1 => player1.FullName.ToUpper().Contains(lastName.ToUpper()) && player1.IsActive);
+                   var dbPlayers = context.Players.Where(player1 => player1.FullName.ToUpper().Contains(lastName.ToUpper()) && player1.IsActive);
                     
                     foreach (var dbPlayer in dbPlayers)
                     {
@@ -184,16 +191,19 @@ namespace CricketDataIngester
                         {
                             _players.Add(player, dbPlayer);
                             foundPlayer = dbPlayer;
+
+                            dbPlayer.CricsheetName = player;
                         }
                     }
                     if (foundPlayer == null)
                     {
                         throw new Exception();
                     }
+                    
                 }
                 else
                 {
-                    dbPlayers = context.Players.Where(player1 => player1.FullName.ToUpper().Contains(firstName.ToUpper()) && player1.IsActive);
+                   var dbPlayers = context.Players.Where(player1 => player1.FullName.ToUpper().Contains(firstName.ToUpper()) && player1.IsActive);
 
                     foreach (var dbPlayer in dbPlayers)
                     {
@@ -210,6 +220,7 @@ namespace CricketDataIngester
                         {
                             _players.Add(player, dbPlayer);
                             foundPlayer = dbPlayer;
+                            dbPlayer.CricsheetName = player;
                         }
                     }
 
@@ -218,7 +229,8 @@ namespace CricketDataIngester
                         throw new Exception();
                     }
                 }
-                return foundPlayer;
+
+                context.SaveChanges();
             }
         }
 
