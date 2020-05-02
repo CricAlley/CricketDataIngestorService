@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using AutoMapper;
 using CricketDataIngester.Data;
 using CricketDataIngester.Elastic;
 using Player = CricketDataIngester.Data.Player;
@@ -13,6 +14,8 @@ namespace CricketDataIngester
     public partial class Form1 : Form
     {
         private Dictionary<string, Player> _players;
+        private IMapper _mapper;
+
         public Form1()
         {
             InitializeComponent();
@@ -22,6 +25,10 @@ namespace CricketDataIngester
         private void Form1_Load(object sender, EventArgs e)
         {
             tbxFolderPath.Text = @"D:\Projects\Data\11-04-2020";
+
+            var mapperConfiguration = new MapperConfiguration(cfg => { cfg.AddProfile<MapperProfile>(); });
+
+            _mapper = mapperConfiguration.CreateMapper();
         }
 
         private void FolderBrowserDialog1_HelpRequest(object sender, EventArgs e)
@@ -51,6 +58,8 @@ namespace CricketDataIngester
 
             var directoryInfos = d.GetDirectories();
 
+            
+
             //var players = new HashSet<string>();
             foreach (var directoryInfo in directoryInfos)
             {
@@ -75,27 +84,52 @@ namespace CricketDataIngester
                         UpdatePlayer(player);
                     }
 
+                    var balls = new List<Ball>();
+
                     foreach (var inning in match.Innings)
                     {
-                        foreach (var delivery in inning.First().Value.Deliveries)
+                        var inningValue = inning.First().Value;
+                        foreach (var delivery in inningValue.Deliveries.First())
                         {
-                            var ball = new Ball();
-                            
+                            var deliveryValue = delivery.Value;
+                            var ball = _mapper.Map<Ball>(deliveryValue);
+                            var bowler = _players[deliveryValue.Bowler];
+                            ball.Bowler = _mapper.Map<Elastic.Player>(bowler);
+
+                            var batsman = _players[deliveryValue.Batsman];
+                            ball.Batsman = _mapper.Map<Elastic.Player>(batsman);
+
+                            var nonStriker = _players[deliveryValue.NonStriker];
+                            ball.NonStriker = _mapper.Map<Elastic.Player>(nonStriker);
+
+                            ball.DeliveryNumber = delivery.Key;
+
+                            var innings = _mapper.Map<Inning>(inningValue);
+                            var matchInfo = match.MatchInfo;
+
+                            innings.Innings = inning.First().Key;
+                            innings.BowlingTeam = matchInfo.Teams.First(s => s != innings.BattingTeam);
+                            ball.Inning = innings;
+
+                            var ballMatch = _mapper.Map<Match>(matchInfo);
+                            ballMatch.MatchId = matchInfo.Dates.First().ToLongDateString() + matchInfo.City +
+                                                string.Join("", matchInfo.Teams.Select(s => s.Replace(" ", ""))) +
+                                                file.Name;
+                            ball.Match = ballMatch;
+
+                            balls.Add(ball);
                         }
-                    }   
+                    }
 
+                    
                     //ListPlayers(players);
-
                     progressBar1.PerformStep();
-
                 }
             }
 
             //var xmlDocumentCreator = new XmlDocumentCreator();
             //var xDocument = xmlDocumentCreator.CreateXML(players.ToList());
             //xDocument.Save(@"D:/Players.xml");
-
-
         }
 
         private static void ListPlayers(List<string> players)

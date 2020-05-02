@@ -7,7 +7,7 @@ namespace CricketDataIngester.Elastic
     public class Match
     {
         public string MatchId { get; set; }
-        public DateTime Date { get; set; }
+        public List<DateTime> Dates { get; set; }
         public string Venue { get; set; }
         public string City { get; set; }
         public string MatchType { get; set; }
@@ -22,7 +22,5 @@ namespace CricketDataIngester.Elastic
         public int IsNeutralVenue { get; set; }
         public List<BowlOutDeliveries> BowlOut { get; set; }
         public Dictionary<string, string> SuperSubs { get; set; }
-        public string HomeTeam { get; set; }
-        public string AwayTeam { get; set; }
     }
 }
