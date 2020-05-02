@@ -1,0 +1,69 @@
+Ball 
+{
+	Match
+	{
+		"ID": Date+ Teams+yamlfileName
+		"City":,
+		"Venue":,
+		"Date":,
+		"MatchType":,
+		"Overs":,
+		"PlayerOfTheMatch":,
+		"Teams": ["",""],
+		"Umpires" ["",""],
+		"Toss":
+		{	
+			"Decision":
+			"Winner":
+		},
+		Outcome:
+		{
+			"By": 
+			{
+				"Runs": 
+			},
+			Winner:""
+		}
+	}
+	"Inning":,
+	"Batting Team":,
+	"Bowling Team":,
+	"Delivery":
+	"Batsman": 
+	{
+		Name:"",
+		PlayingRole: "",
+		DateOfBirth:"",
+		BattingStyle: "",
+		BowlingStyle:"",
+		CricInfoId:"",
+		CricsheetName:""
+	},
+	"Bowler":
+	{
+		Name:"",
+		PlayingRole: "",
+		DateOfBirth:"",
+		BattingStyle: "",
+		BowlingStyle:"",
+		CricInfoId:"",
+		CricsheetName:""
+	},
+	"Non-Striker":
+	{
+		Name:"",
+		PlayingRole: "",
+		DateOfBirth:"",
+		BattingStyle: "",
+		BowlingStyle:"",
+		CricInfoId:"",
+		CricsheetName:""
+	},
+	"Extras":
+	{
+		"LegByes":"",
+	}
+	"Runs":
+	"Wicket":	
+	
+}

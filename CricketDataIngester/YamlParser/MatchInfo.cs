@@ -1,9 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using YamlDotNet.Serialization;
 
-namespace CricketDataIngester
+namespace CricketDataIngester.YamlParser
 {
     public class MatchInfo
     {

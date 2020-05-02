@@ -1,4 +1,4 @@
-﻿namespace CricketDataIngester
+﻿namespace CricketDataIngester.YamlParser
 {
     public class BowlOutDeliveries
     {

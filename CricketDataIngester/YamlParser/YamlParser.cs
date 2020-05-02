@@ -2,7 +2,7 @@
 using YamlDotNet.Serialization;
 using YamlDotNet.Serialization.NamingConventions;
 
-namespace CricketDataIngester
+namespace CricketDataIngester.YamlParser
 {
     public class YamlParser
     {

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace CricketDataIngester
+namespace CricketDataIngester.YamlParser
 {
     public class Replacements
     {

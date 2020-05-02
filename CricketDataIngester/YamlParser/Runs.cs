@@ -1,6 +1,6 @@
 ﻿using YamlDotNet.Serialization;
 
-namespace CricketDataIngester
+namespace CricketDataIngester.YamlParser
 {
     public class Runs 
     {

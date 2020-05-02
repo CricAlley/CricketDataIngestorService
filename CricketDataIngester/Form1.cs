@@ -45,7 +45,7 @@ namespace CricketDataIngester
 
             DirectoryInfo d = new DirectoryInfo(text);
 
-            var yamlParser = new YamlParser();
+            var yamlParser = new YamlParser.YamlParser();
 
             var directoryInfos = d.GetDirectories();
 
