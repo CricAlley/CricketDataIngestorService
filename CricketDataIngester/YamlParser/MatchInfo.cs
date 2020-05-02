@@ -12,8 +12,6 @@ namespace CricketDataIngester.YamlParser
         public string Gender { get; set; }
         public List<string> Teams { get; set; }
         public Outcome Outcome { get; set; }
-
-        public string Result { get; set; }
         public Toss Toss { get; set; }
 
         [YamlMember(Alias = "player_of_match", ApplyNamingConventions = false)]
@@ -33,7 +31,5 @@ namespace CricketDataIngester.YamlParser
 
         [YamlMember(Alias = "supersubs", ApplyNamingConventions = false)]
         public Dictionary<string, string> SuperSubs { get; set; }
-
-
     }
 }

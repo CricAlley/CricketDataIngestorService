@@ -5,6 +5,8 @@ using System.Linq;
 using System.Windows.Forms;
 using System.Xml.Linq;
 using CricketDataIngester.Data;
+using CricketDataIngester.Elastic;
+using Player = CricketDataIngester.Data.Player;
 
 namespace CricketDataIngester
 {
@@ -64,7 +66,7 @@ namespace CricketDataIngester
                     lblFilenameValue.Text = file.Name;
 
                     var match = yamlParser.Parse(directoryInfo.FullName + "\\" + file.Name);
-                    
+
                     var players = match.GetPlayers();
 
                     // Update Cricsheet name in DB
@@ -73,11 +75,14 @@ namespace CricketDataIngester
                         UpdatePlayer(player);
                     }
 
-                    foreach (var matchInning in match.Innings)
+                    foreach (var inning in match.Innings)
                     {
-                        
-                    }
-
+                        foreach (var delivery in inning.First().Value.Deliveries)
+                        {
+                            var ball = new Ball();
+                            
+                        }
+                    }   
 
                     //ListPlayers(players);
 

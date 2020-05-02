@@ -74,6 +74,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Elastic\Ball.cs" />
+    <Compile Include="Elastic\Inning.cs" />
+    <Compile Include="Elastic\Match.cs" />
+    <Compile Include="Elastic\Player.cs" />
     <Compile Include="YamlParser\BowlOutDeliveries.cs" />
     <Compile Include="YamlParser\By.cs" />
     <Compile Include="Data\PlayerContext.cs" />
