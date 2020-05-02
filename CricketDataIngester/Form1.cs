@@ -7,6 +7,11 @@ using System.Xml.Linq;
 using AutoMapper;
 using CricketDataIngester.Data;
 using CricketDataIngester.Elastic;
+using CricketDataIngester.YamlParser;
+using ElasticRepo;
+using Nest;
+using Inning = CricketDataIngester.Elastic.Inning;
+using Match = CricketDataIngester.Elastic.Match;
 using Player = CricketDataIngester.Data.Player;
 
 namespace CricketDataIngester
@@ -107,12 +112,14 @@ namespace CricketDataIngester
 
                     var balls = new List<Ball>();
 
+                    var elasticClient = new ElasticClientProvider().GetElasticClient();
+
                     foreach (var inning in match.Innings)
                     {
-                        var inningValue = inning.First().Value;
-                        foreach (var delivery in inningValue.Deliveries.First())
+                        var inningValue = inning.Values.First();
+                        foreach (var delivery in inningValue.Deliveries)
                         {
-                            var deliveryValue = delivery.Value;
+                            var deliveryValue = delivery.Values.First();
                             var ball = _mapper.Map<Ball>(deliveryValue);
                             var bowler = _players[deliveryValue.Bowler];
                             ball.Bowler = _mapper.Map<Elastic.Player>(bowler);
@@ -123,7 +130,7 @@ namespace CricketDataIngester
                             var nonStriker = _players[deliveryValue.NonStriker];
                             ball.NonStriker = _mapper.Map<Elastic.Player>(nonStriker);
 
-                            ball.DeliveryNumber = delivery.Key;
+                            ball.DeliveryNumber = delivery.Keys.First();
 
                             var innings = _mapper.Map<Inning>(inningValue);
                             var matchInfo = match.MatchInfo;
@@ -139,10 +146,14 @@ namespace CricketDataIngester
                             ball.Match = ballMatch;
 
                             balls.Add(ball);
+
                         }
                     }
 
-                    
+                    var bulkIndexResponse = elasticClient.Bulk(b => b   
+                        .Index("iplballs")
+                        .IndexMany(balls));
+
                     //ListPlayers(players);
                     progressBar1.PerformStep();
                 }
@@ -295,6 +306,40 @@ namespace CricketDataIngester
 
         private void BtnStop_Click(object sender, EventArgs e)
         {
+
+        }
+
+        private void BtnCreateIndex_Click(object sender, EventArgs e)
+        {
+            var elasticClient = new ElasticClientProvider().GetElasticClient();
+
+            var settings = new IndexSettings { NumberOfReplicas = 1, NumberOfShards = 2 };
+
+            var indexConfig = new IndexState
+            {
+                Settings = settings
+            };
+
+            var createIndexResponse = elasticClient.Indices.Create("iplballs", c => c
+                .Map<Ball>(m => m
+                    .AutoMap<Ball>()
+                    .AutoMap<Match>()
+                    .AutoMap<Outcome>()
+                    .AutoMap<Toss>()
+                    .AutoMap<BowlOutDeliveries>()
+                    .AutoMap<Inning>()
+                    .AutoMap<Elastic.Player>()
+                    .AutoMap<Runs>()
+                    .AutoMap<Extras>()
+                    .AutoMap<Wicket>()
+                    .AutoMap<Replacements>()
+                    .AutoMap<PenaltyRuns>()
+                    .AutoMap<ReplacementRole>()
+                    .AutoMap<ReplacementMatch>()
+                )
+            );
+
+            MessageBox.Show(createIndexResponse.Acknowledged.ToString());
 
         }
     }

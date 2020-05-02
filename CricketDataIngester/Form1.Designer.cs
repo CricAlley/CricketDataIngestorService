@@ -39,6 +39,7 @@
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.lblDirectory = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.btnCreateIndex = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // lblFilename
@@ -134,11 +135,22 @@
             this.label2.TabIndex = 8;
             this.label2.Text = "Directory:";
             // 
+            // btnCreateIndex
+            // 
+            this.btnCreateIndex.Location = new System.Drawing.Point(475, 169);
+            this.btnCreateIndex.Name = "btnCreateIndex";
+            this.btnCreateIndex.Size = new System.Drawing.Size(75, 23);
+            this.btnCreateIndex.TabIndex = 10;
+            this.btnCreateIndex.Text = "Create Index";
+            this.btnCreateIndex.UseVisualStyleBackColor = true;
+            this.btnCreateIndex.Click += new System.EventHandler(this.BtnCreateIndex_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(724, 210);
+            this.Controls.Add(this.btnCreateIndex);
             this.Controls.Add(this.lblDirectory);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.progressBar1);
@@ -170,6 +182,7 @@
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Label lblDirectory;
         private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Button btnCreateIndex;
     }
 }
 
