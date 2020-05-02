@@ -15,11 +15,32 @@ namespace CricketDataIngester
     {
         private Dictionary<string, Player> _players;
         private IMapper _mapper;
+        private List<Tuple<string, int>> _ambigousPlayers;
 
         public Form1()
         {
             InitializeComponent();
             _players = new Dictionary<string, Player>();
+            _ambigousPlayers = new List<Tuple<string, int>> {
+                new Tuple<string, int>("A Singh",26789),
+                new Tuple<string, int>("Jaskaran Singh",376102),
+                new Tuple<string, int>("R Sharma",272994),
+                new Tuple<string, int>("N Saini",274785),
+                new Tuple<string, int>("R Shukla",390547)
+            };
+
+
+            using (var context = new PlayerContext())
+            {
+                foreach (var plr in _ambigousPlayers)
+                {
+                    var player = context.Players.First(p => p.CricInfoId == plr.Item2);
+                    player.CricsheetName = plr.Item1;
+                    _players.Add(plr.Item1, player);
+                }
+
+                context.SaveChanges();
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -165,8 +186,7 @@ namespace CricketDataIngester
                 return ;
             }
 
-            var list = new List<string> {"A Singh", "Jaskaran Singh", "R Sharma", "N Saini", "R Shukla" };
-            if (list.Any(p => p == player))
+            if (_ambigousPlayers.Any(p => p.Item1 == player))
             {
                 return ;
             }
