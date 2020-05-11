@@ -62,7 +62,7 @@ namespace CricketDataIngester.YamlParser
         }
 
         [YamlIgnore]
-        public int HitWicketHurtCount
+        public int HitWicketCount
         {
             get => Kind.ToLower() == "hit wicket" ? 1 : 0;
             set { }
