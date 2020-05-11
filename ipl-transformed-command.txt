@@ -1,0 +1,265 @@
+PUT _transform/ipl-transformed
+{
+  "source": {
+    "index": [
+      "iplballs*"
+    ]
+  },
+  "pivot": {
+    "group_by": {
+      "match.matchId.keyword": {
+        "terms": {
+          "field": "match.matchId.keyword"
+        }
+      },
+      "inning.innings.keyword": {
+        "terms": {
+          "field": "inning.innings.keyword"
+        }
+      },
+      "match.venue.keyword": {
+        "terms": {
+          "field": "match.venue.keyword"
+        }
+      },
+      "batsman.name.keyword": {
+        "terms": {
+          "field": "batsman.name.keyword"
+        }
+      },
+      "bowler.name.keyword": {
+        "terms": {
+          "field": "bowler.name.keyword"
+        }
+      },
+      "match.dates": {
+        "date_histogram": {
+          "field": "match.dates",
+          "calendar_interval": "1m"
+        }
+      }
+    },
+    "aggregations": {
+      "runs.total.sum": {
+        "sum": {
+          "field": "runs.total"
+        }
+      },
+      "runs.batsman.sum": {
+        "sum": {
+          "field": "runs.batsman"
+        }
+      },
+      "runs.extras.sum": {
+        "sum": {
+          "field": "runs.extras"
+        }
+      },
+      "runs.dotBatsman.sum": {
+        "sum": {
+          "field": "runs.dotBatsman"
+        }
+      },
+      "runs.dotsTotal.sum": {
+        "sum": {
+          "field": "runs.dotsTotal"
+        }
+      },
+      "runs.oneRunBatsman.sum": {
+        "sum": {
+          "field": "runs.oneRunBatsman"
+        }
+      },
+      "runs.oneRunTotal.sum": {
+        "sum": {
+          "field": "runs.oneRunTotal"
+        }
+      },
+      "runs.oneRunExtra.sum": {
+        "sum": {
+          "field": "runs.oneRunExtra"
+        }
+      },
+      "runs.twoRunsBatsman.sum": {
+        "sum": {
+          "field": "runs.twoRunsBatsman"
+        }
+      },
+      "runs.twoRunsTotal.sum": {
+        "sum": {
+          "field": "runs.twoRunsTotal"
+        }
+      },
+      "runs.twoRunsExtra.sum": {
+        "sum": {
+          "field": "runs.twoRunsExtra"
+        }
+      },
+      "runs.threeRunsBatsman.sum": {
+        "sum": {
+          "field": "runs.threeRunsBatsman"
+        }
+      },
+      "runs.threeRunsTotal.sum": {
+        "sum": {
+          "field": "runs.threeRunsTotal"
+        }
+      },
+      "runs.threeRunsExtra.sum": {
+        "sum": {
+          "field": "runs.threeRunsExtra"
+        }
+      },
+      "runs.fourRunsBatsman.sum": {
+        "sum": {
+          "field": "runs.fourRunsBatsman"
+        }
+      },
+      "runs.fourBoundaryRunsBatsman.sum": {
+        "sum": {
+          "field": "runs.fourBoundaryRunsBatsman"
+        }
+      },
+      "runs.fourRunsTotal.sum": {
+        "sum": {
+          "field": "runs.fourRunsTotal"
+        }
+      },
+      "runs.fourRunsExtra.sum": {
+        "sum": {
+          "field": "runs.fourRunsExtra"
+        }
+      },
+      "runs.fiveRunsBatsman.sum": {
+        "sum": {
+          "field": "runs.fiveRunsBatsman"
+        }
+      },
+      "runs.fiveRunsTotal.sum": {
+        "sum": {
+          "field": "runs.fiveRunsTotal"
+        }
+      },
+      "runs.fiveRunsExtra.sum": {
+        "sum": {
+          "field": "runs.fiveRunsExtra"
+        }
+      },
+      "runs.sixRunsBatsman.sum": {
+        "sum": {
+          "field": "runs.sixRunsBatsman"
+        }
+      },
+      "runs.sixBoundaryRunsBatsman.sum": {
+        "sum": {
+          "field": "runs.sixBoundaryRunsBatsman"
+        }
+      },
+      "runs.sixRunsTotal.sum": {
+        "sum": {
+          "field": "runs.sixRunsTotal"
+        }
+      },
+      "runs.sixRunsExtra.sum": {
+        "sum": {
+          "field": "runs.sixRunsExtra"
+        }
+      },
+      "runs.sevenRunsExtras.sum": {
+        "sum": {
+          "field": "runs.sevenRunsExtras"
+        }
+      },
+      "runs.sevenRunsTotal.sum": {
+        "sum": {
+          "field": "runs.sevenRunsTotal"
+        }
+      },
+      "extras.byes.sum": {
+        "sum": {
+          "field": "extras.byes"
+        }
+      },
+      "extras.legByes.sum": {
+        "sum": {
+          "field": "extras.legByes"
+        }
+      },
+      "extras.noBalls.sum": {
+        "sum": {
+          "field": "extras.noBalls"
+        }
+      },
+      "extras.wides.sum": {
+        "sum": {
+          "field": "extras.wides"
+        }
+      },
+      "extras.penalty.sum": {
+        "sum": {
+          "field": "extras.penalty"
+        }
+      },
+      "wicket.count.sum": {
+        "sum": {
+          "field": "wicket.count"
+        }
+      },
+      "wicket.caughtAndBowledCount.sum": {
+        "sum": {
+          "field": "wicket.caughtAndBowledCount"
+        }
+      },
+      "wicket.caughtCount.sum": {
+        "sum": {
+          "field": "wicket.caughtCount"
+        }
+      },
+      "wicket.hitWicketHurtCount.sum": {
+        "sum": {
+          "field": "wicket.hitWicketHurtCount"
+        }
+      },
+      "wicket.stumpedCount.sum": {
+        "sum": {
+          "field": "wicket.stumpedCount"
+        }
+      },
+      "wicket.retiredHurtCount.sum": {
+        "sum": {
+          "field": "wicket.retiredHurtCount"
+        }
+      },
+      "wicket.obstructingTheFieldCount.sum": {
+        "sum": {
+          "field": "wicket.obstructingTheFieldCount"
+        }
+      },
+      "wicket.bowledCount.sum": {
+        "sum": {
+          "field": "wicket.bowledCount"
+        }
+      },
+      "wicket.runOutCount.sum": {
+        "sum": {
+          "field": "wicket.runOutCount"
+        }
+      },
+      "wicket.lBWCount.sum": {
+        "sum": {
+          "field": "wicket.lBWCount"
+        }
+      }
+    }
+  },
+  "description": "transformed data",
+  "dest": {
+    "index": "ipl-transformed"
+  },
+  "sync": {
+    "time": {
+      "field": "match.dates",
+      "delay": "60s"
+    }
+  }
+}
