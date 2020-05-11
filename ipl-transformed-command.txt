@@ -1,4 +1,4 @@
-PUT _transform/ipl-transformed
+PUT _transform/venue-inning-data
 {
   "source": {
     "index": [
@@ -22,20 +22,10 @@ PUT _transform/ipl-transformed
           "field": "match.venue.keyword"
         }
       },
-      "batsman.name.keyword": {
-        "terms": {
-          "field": "batsman.name.keyword"
-        }
-      },
-      "bowler.name.keyword": {
-        "terms": {
-          "field": "bowler.name.keyword"
-        }
-      },
       "match.dates": {
         "date_histogram": {
           "field": "match.dates",
-          "calendar_interval": "1m"
+          "calendar_interval": "1y"
         }
       }
     },
@@ -252,9 +242,9 @@ PUT _transform/ipl-transformed
       }
     }
   },
-  "description": "transformed data",
+  "description": "Venue Specific data",
   "dest": {
-    "index": "ipl-transformed"
+    "index": "venue-inning-data"
   },
   "sync": {
     "time": {
