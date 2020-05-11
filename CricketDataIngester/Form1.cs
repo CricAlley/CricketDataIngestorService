@@ -130,7 +130,7 @@ namespace CricketDataIngester
                             var nonStriker = _players[deliveryValue.NonStriker];
                             ball.NonStriker = _mapper.Map<Elastic.Player>(nonStriker);
 
-                            ball.DeliveryNumber = delivery.Keys.First();
+                            ball.DeliveryKey = delivery.Keys.First();
 
                             var innings = _mapper.Map<Inning>(inningValue);
                             var matchInfo = match.MatchInfo;
@@ -150,7 +150,7 @@ namespace CricketDataIngester
                         }
                     }
 
-                    var bulkIndexResponse = elasticClient.Bulk(b => b   
+                    var bulkIndexResponse = elasticClient.Bulk(b => b
                         .Index("iplballs")
                         .IndexMany(balls));
 
