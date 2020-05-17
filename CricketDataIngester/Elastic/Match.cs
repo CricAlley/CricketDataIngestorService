@@ -7,7 +7,7 @@ namespace CricketDataIngester.Elastic
     public class Match
     {
         public string MatchId { get; set; }
-        public List<DateTime> Dates { get; set; }
+        public DateTime Date { get; set; }
         public string Venue { get; set; }
         public string City { get; set; }
         public string MatchType { get; set; }

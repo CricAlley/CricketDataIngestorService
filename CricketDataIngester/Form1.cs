@@ -146,7 +146,6 @@ namespace CricketDataIngester
                             ball.Match = ballMatch;
 
                             balls.Add(ball);
-
                         }
                     }
 
@@ -324,7 +323,7 @@ namespace CricketDataIngester
                 .Map<Ball>(m => m
                     .AutoMap<Ball>()
                     .AutoMap<Match>()
-                    .AutoMap<Outcome>()
+                    .AutoMap<Elastic.Outcome>()
                     .AutoMap<Toss>()
                     .AutoMap<BowlOutDeliveries>()
                     .AutoMap<Inning>()
