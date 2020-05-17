@@ -6,12 +6,12 @@ using System.Windows.Forms;
 using System.Xml.Linq;
 using AutoMapper;
 using CricketDataIngester.Data;
-using CricketDataIngester.Elastic;
-using CricketDataIngester.YamlParser;
 using ElasticRepo;
+using ElasticRepo.Entities;
+using ElasticRepo.Indices;
 using Nest;
-using Inning = CricketDataIngester.Elastic.Inning;
-using Match = CricketDataIngester.Elastic.Match;
+using Inning = ElasticRepo.Entities.Inning;
+using Match = ElasticRepo.Entities.Match;
 using Player = CricketDataIngester.Data.Player;
 
 namespace CricketDataIngester
@@ -122,13 +122,13 @@ namespace CricketDataIngester
                             var deliveryValue = delivery.Values.First();
                             var ball = _mapper.Map<Ball>(deliveryValue);
                             var bowler = _players[deliveryValue.Bowler];
-                            ball.Bowler = _mapper.Map<Elastic.Player>(bowler);
+                            ball.Bowler = _mapper.Map<ElasticRepo.Entities.Player>(bowler);
 
                             var batsman = _players[deliveryValue.Batsman];
-                            ball.Batsman = _mapper.Map<Elastic.Player>(batsman);
+                            ball.Batsman = _mapper.Map<ElasticRepo.Entities.Player>(batsman);
 
                             var nonStriker = _players[deliveryValue.NonStriker];
-                            ball.NonStriker = _mapper.Map<Elastic.Player>(nonStriker);
+                            ball.NonStriker = _mapper.Map<ElasticRepo.Entities.Player>(nonStriker);
 
                             ball.DeliveryKey = delivery.Keys.First();
 
@@ -310,36 +310,9 @@ namespace CricketDataIngester
 
         private void BtnCreateIndex_Click(object sender, EventArgs e)
         {
-            var elasticClient = new ElasticClientProvider().GetElasticClient();
+            var createIndexResponse = new IndexCreator().CreateIplIndex();
 
-            var settings = new IndexSettings { NumberOfReplicas = 1, NumberOfShards = 2 };
-
-            var indexConfig = new IndexState
-            {
-                Settings = settings
-            };
-
-            var createIndexResponse = elasticClient.Indices.Create("iplballs", c => c
-                .Map<Ball>(m => m
-                    .AutoMap<Ball>()
-                    .AutoMap<Match>()
-                    .AutoMap<Elastic.Outcome>()
-                    .AutoMap<Toss>()
-                    .AutoMap<BowlOutDeliveries>()
-                    .AutoMap<Inning>()
-                    .AutoMap<Elastic.Player>()
-                    .AutoMap<Runs>()
-                    .AutoMap<Extras>()
-                    .AutoMap<Wicket>()
-                    .AutoMap<Replacements>()
-                    .AutoMap<PenaltyRuns>()
-                    .AutoMap<ReplacementRole>()
-                    .AutoMap<ReplacementMatch>()
-                )
-            );
-
-            MessageBox.Show(createIndexResponse.Acknowledged.ToString());
-
+            MessageBox.Show($"Index created : {createIndexResponse.Acknowledged.ToString()}");
         }
     }
 

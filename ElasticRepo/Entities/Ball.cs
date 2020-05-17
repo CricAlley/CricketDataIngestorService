@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Globalization;
-using CricketDataIngester.YamlParser;
 
-namespace CricketDataIngester.Elastic
+namespace ElasticRepo.Entities
 {
     public class Ball
     {
@@ -37,6 +36,4 @@ namespace CricketDataIngester.Elastic
             return int.Parse(str.Substring(str.IndexOf('.') + 1));
         }
     }
-
-    
 }

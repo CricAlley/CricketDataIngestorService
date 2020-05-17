@@ -77,11 +77,28 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ElasticClientProvider.cs" />
+    <Compile Include="Entities\Ball.cs" />
+    <Compile Include="Entities\BowlOutDeliveries.cs" />
+    <Compile Include="Entities\By.cs" />
+    <Compile Include="Entities\Extras.cs" />
+    <Compile Include="Entities\Inning.cs" />
+    <Compile Include="Entities\Match.cs" />
+    <Compile Include="Entities\Outcome.cs" />
+    <Compile Include="Entities\PenaltyRuns.cs" />
+    <Compile Include="Entities\Player.cs" />
+    <Compile Include="Entities\ReplacementMatch.cs" />
+    <Compile Include="Entities\ReplacementRole.cs" />
+    <Compile Include="Entities\Replacements.cs" />
+    <Compile Include="Entities\Runs.cs" />
+    <Compile Include="Entities\Toss.cs" />
+    <Compile Include="Entities\Wicket.cs" />
+    <Compile Include="Indices\IndexCreator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

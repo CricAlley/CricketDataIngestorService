@@ -96,11 +96,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Elastic\Ball.cs" />
-    <Compile Include="Elastic\Inning.cs" />
-    <Compile Include="Elastic\Match.cs" />
-    <Compile Include="Elastic\Outcome.cs" />
-    <Compile Include="Elastic\Player.cs" />
     <Compile Include="MapperProfile.cs" />
     <Compile Include="YamlParser\BowlOutDeliveries.cs" />
     <Compile Include="YamlParser\By.cs" />
@@ -183,5 +178,6 @@
       <Name>ElasticRepo</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

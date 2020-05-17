@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace CricketDataIngester.Elastic
+namespace ElasticRepo.Entities
 {
     public class Player
     {

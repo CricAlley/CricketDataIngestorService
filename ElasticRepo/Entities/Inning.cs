@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
-using CricketDataIngester.YamlParser;
 
-namespace CricketDataIngester.Elastic
+namespace ElasticRepo.Entities
 {
     public class Inning
     {
