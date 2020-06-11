@@ -21,6 +21,7 @@ namespace ElasticRepo.Entities
             }
         }
 
+        public string OverId { get; set; }
         public int Over { get; set; }
         public int BallNumber { get; set; }
         public Player Batsman { get; set; }

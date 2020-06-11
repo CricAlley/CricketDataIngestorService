@@ -40,6 +40,7 @@
             this.lblDirectory = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.btnCreateIndex = new System.Windows.Forms.Button();
+            this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
             this.SuspendLayout();
             // 
             // lblFilename
@@ -145,6 +146,14 @@
             this.btnCreateIndex.UseVisualStyleBackColor = true;
             this.btnCreateIndex.Click += new System.EventHandler(this.BtnCreateIndex_Click);
             // 
+            // backgroundWorker
+            // 
+            this.backgroundWorker.WorkerReportsProgress = true;
+            this.backgroundWorker.WorkerSupportsCancellation = true;
+            this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_DoWork);
+            this.backgroundWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker_ProgressChanged);
+            this.backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_RunWorkerCompleted);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -183,6 +192,7 @@
         private System.Windows.Forms.Label lblDirectory;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Button btnCreateIndex;
+        private System.ComponentModel.BackgroundWorker backgroundWorker;
     }
 }
 
