@@ -14,22 +14,26 @@ namespace CricketDataIngester.YamlParser
         public Outcome Outcome { get; set; }
         public Toss Toss { get; set; }
 
-        [YamlMember(Alias = "player_of_match", ApplyNamingConventions = false)]
+        [YamlMember(Alias = "player_of_match")]
         public List<string> PlayerOfTheMatch { get; set; }
 
-        [YamlMember(Alias = "match_type", ApplyNamingConventions = false)]
+        [YamlMember(Alias = "match_type")]
         public string MatchType { get; set; }
+
+        [YamlMember(Alias = "match_type_number")]
+        public string MatchTypeNumber { get; set; }
+
         public int Overs { get; set; }
         public string City { get; set; }
         public List<string> Umpires { get; set; }
 
-        [YamlMember(Alias = "neutral_venue", ApplyNamingConventions = false)]
+        [YamlMember(Alias = "neutral_venue")]
         public int IsNeutralVenue { get; set; }
 
-        [YamlMember(Alias = "bowl_out", ApplyNamingConventions = false)]
+        [YamlMember(Alias = "bowl_out")]
         public List<BowlOutDeliveries> BowlOut { get; set; }
 
-        [YamlMember(Alias = "supersubs", ApplyNamingConventions = false)]
+        [YamlMember(Alias = "supersubs")]
         public Dictionary<string, string> SuperSubs { get; set; }
     }
 }

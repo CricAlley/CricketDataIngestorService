@@ -8,7 +8,7 @@ namespace CricketDataIngester.YamlParser
         public int Total { get; set; }
         public int Batsman { get; set; }
 
-        [YamlMember(Alias = "non_boundary", ApplyNamingConventions = false)]
+        [YamlMember(Alias = "non_boundary")]
         public int IsNonBoundary { get; set; }
     }
 }

@@ -5,7 +5,6 @@ namespace CricketDataIngester.YamlParser
 {
     public class Meta 
     {
-        [YamlMember(Alias = "data_version", ApplyNamingConventions = false)]
         public decimal DataVersion { get; set; }
 
         public DateTime Created { get; set; }

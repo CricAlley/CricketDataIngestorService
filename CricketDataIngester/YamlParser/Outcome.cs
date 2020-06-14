@@ -8,10 +8,10 @@ namespace CricketDataIngester.YamlParser
 
         public By By { get; set; }
 
-        [YamlMember(Alias = "bowl_out", ApplyNamingConventions = false)]
+        [YamlMember(Alias = "bowl_out")]
         public string BowloutWinner { get; set; }
 
-        [YamlMember(Alias = "eliminator", ApplyNamingConventions = false)]
+        [YamlMember(Alias = "eliminator")]
         public string EliminatorWinner { get; set; }
 
         public string Method { get; set; }

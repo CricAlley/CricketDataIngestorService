@@ -10,7 +10,7 @@ namespace CricketDataIngester.YamlParser
 
         public Meta Meta { get; set; }
 
-        [YamlMember(Alias = "info", ApplyNamingConventions = false)]
+        [YamlMember(Alias = "info")]
         public MatchInfo MatchInfo { get; set; }
 
         public List<Dictionary<string, Inning>> Innings { get; set; }

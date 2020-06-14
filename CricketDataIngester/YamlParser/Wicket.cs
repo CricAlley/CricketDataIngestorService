@@ -7,7 +7,7 @@ namespace CricketDataIngester.YamlParser
     {
         public int Count => 1;
 
-        [YamlMember(Alias = "player_out", ApplyNamingConventions = false)]
+        [YamlMember(Alias = "player_out")]
         public string PlayerOut { get; set; }
         public List<string> Fielders { get; set; }
         public string Kind { get; set; }

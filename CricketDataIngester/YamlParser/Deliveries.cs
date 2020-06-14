@@ -7,7 +7,7 @@ namespace CricketDataIngester.YamlParser
         public string Batsman { get; set; }
         public string Bowler { get; set; }
 
-        [YamlMember(Alias = "non_striker", ApplyNamingConventions = false)]
+        [YamlMember(Alias = "non_striker")]
         public string NonStriker { get; set; }
 
         public Runs Runs { get; set; }
