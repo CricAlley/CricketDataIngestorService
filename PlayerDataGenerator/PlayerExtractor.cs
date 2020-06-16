@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using PlayerDataGenerator.Data;
 
@@ -15,6 +16,9 @@ namespace PlayerDataGenerator
     internal class PlayerExtractor : IPlayerExtractor
     {
         private const string BATSMAN = "Batsman";
+        private const string BOWLER = "Bowler";
+        private const string ALLROUNDER = "AllRounder";
+        private const string WICKET_KEEPER = "WicketKeeper";
         private readonly GeneralSettings _generalSettings;
         private readonly PlayerContext _playerContext;
         private readonly List<Tuple<string, int>> _preloadedPlayers;
@@ -36,19 +40,32 @@ namespace PlayerDataGenerator
                 new Tuple<string, int>("R Shukla", 390547),
                 new Tuple<string, int>("GS Sandhu", 499660),
                 new Tuple<string, int>("HTRY Thornton", 837611),
-                //new Tuple<string, int>("AG Harriott", 437446),
+                new Tuple<string, int>("AG Harriott", 437446),
                 new Tuple<string, int>("Shadab Khan", 922943),
                 new Tuple<string, int>("D Morton", 922943),
             };
 
             _unavailablePlayers.Add("AG Harriott",
-                new Player()
+                new Player
                 {
                     FullName = "Andrew G Harriott", Name = "Andrew Harriott", BattingStyle = "Right-hand bat",
+                    DateOfBirth = null,
                     CricInfoId = 437446, CricsheetName = "AG Harriott", IsActive = true, PlayingRole = BATSMAN
                 });
 
-
+            //_unavailablePlayers.Add("AG Harriott",
+            //    new Player
+            //    {
+            //        CricInfoId = 437446,
+            //        CricsheetName = "AG Harriott",
+            //        FullName = "Andrew G Harriott",
+            //        Name = "Andrew Harriott",
+            //        DateOfBirth = null,
+            //        BattingStyle = "Right-hand bat",
+            //        BowlingStyle = "Right-hand bat",
+            //        PlayingRole = BATSMAN,
+            //        IsActive = true,
+            //    });
 
             foreach (var plr in _preloadedPlayers)
             {
@@ -56,10 +73,14 @@ namespace PlayerDataGenerator
 
                 if (player == null)
                 {
-
+                    player = _unavailablePlayers[plr.Item1];
+                    _playerContext.Players.Add(player);
+                }
+                else
+                {
+                    player.CricsheetName = plr.Item1;
                 }
 
-                player.CricsheetName = plr.Item1;
                 _players.Add(plr.Item1, player);
             }
 
@@ -135,7 +156,7 @@ namespace PlayerDataGenerator
 
             if (_players.ContainsKey(player) || _failedPlayers.ContainsKey(player)) return;
 
-            Player foundPlayer = null;
+            List<Player> foundPlayers = new List<Player>();
 
             var names = player.Split(' ');
 
@@ -149,7 +170,7 @@ namespace PlayerDataGenerator
             if (isInitials)
             {
                 var dbPlayers = _playerContext.Players.Where(player1 =>
-                    player1.FullName.ToUpper().Contains(lastName.ToUpper()) && player1.IsActive);
+                    player1.FullName.ToUpper().Contains(lastName.ToUpper()) && player1.IsActive).ToList();
 
                 if (!dbPlayers.Any())
                 {
@@ -191,22 +212,33 @@ namespace PlayerDataGenerator
 
                     if (isfound)
                     {
-                        _players.Add(player, dbPlayer);
-                        foundPlayer = dbPlayer;
-
-                        dbPlayer.CricsheetName = player;
+                        foundPlayers.Add(dbPlayer);
                     }
                 }
 
-                if (foundPlayer == null)
+                if (!foundPlayers.Any())
                 {
                     throw new NullReferenceException("Player not found");
+                }
+                else if (foundPlayers.Count > 1)
+                {
+                    throw new AmbiguousMatchException("Multiple Players found for same key");
+                }
+                else
+                {
+                    var dbPlayer = foundPlayers.First();
+                    _players.Add(player, dbPlayer);
+                    dbPlayer.CricsheetName = player;
                 }
             }
             else
             {
                 var dbPlayers = _playerContext.Players.Where(player1 =>
-                    player1.FullName.ToUpper().Contains(firstName.ToUpper()) && player1.IsActive);
+                    player1.FullName.ToUpper().Contains(firstName.ToUpper()) && player1.IsActive).ToList();
+                if (!dbPlayers.Any())
+                {
+                    throw new Exception("Player not present");
+                }
 
                 foreach (var dbPlayer in dbPlayers)
                 {
@@ -220,13 +252,24 @@ namespace PlayerDataGenerator
                         lastName.ToUpper() == dbLastName.ToUpper() &&
                         middleName?.ToUpper() == dbMiddleName?.ToUpper())
                     {
-                        _players.Add(player, dbPlayer);
-                        foundPlayer = dbPlayer;
-                        dbPlayer.CricsheetName = player;
+                        foundPlayers.Add(dbPlayer);
                     }
                 }
 
-                if (foundPlayer == null) throw new NullReferenceException("Player not found");
+                if (!foundPlayers.Any())
+                {
+                    throw new NullReferenceException("Player not found");
+                }
+                else if(foundPlayers.Count > 1)
+                {
+                    throw new AmbiguousMatchException("Multiple Players found for same key");
+                }
+                else
+                {
+                    var dbPlayer = foundPlayers.First();   
+                    _players.Add(player, dbPlayer);
+                    dbPlayer.CricsheetName = player;
+                }
             }
 
             _playerContext.SaveChanges();
