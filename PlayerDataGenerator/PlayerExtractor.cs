@@ -40,48 +40,173 @@ namespace PlayerDataGenerator
                 new Tuple<string, int>("R Shukla", 390547),
                 new Tuple<string, int>("GS Sandhu", 499660),
                 new Tuple<string, int>("HTRY Thornton", 837611),
-                new Tuple<string, int>("AG Harriott", 437446),
                 new Tuple<string, int>("Shadab Khan", 922943),
                 new Tuple<string, int>("D Morton", 922943),
+                new Tuple<string, int>("Rashid Khan", 793463),
+                new Tuple<string, int>("J Edwards", 1088610),
+                new Tuple<string, int>("C Green", 1076713),
+                new Tuple<string, int>("TL O''Connell", 1159591),
+                new Tuple<string, int>("SJ Coyte (2)", 4886),
+                new Tuple<string, int>("MJ Buchanan", 505118),
+                new Tuple<string, int>("OA Shah", 20123),
+                new Tuple<string, int>("Yasir Arafat", 43654),
+                new Tuple<string, int>("TM Dilshan", 48472),
+                new Tuple<string, int>("Mohammad Hafeez", 41434),
+                new Tuple<string, int>("DPMD Jayawardene", 49289),
             };
 
             _unavailablePlayers.Add("AG Harriott",
                 new Player
                 {
-                    FullName = "Andrew G Harriott", Name = "Andrew Harriott", BattingStyle = "Right-hand bat",
+                    FullName = "Andrew G Harriott",
+                    Name = "Andrew Harriott",
+                    BattingStyle = "Right-hand bat",
                     DateOfBirth = null,
-                    CricInfoId = 437446, CricsheetName = "AG Harriott", IsActive = true, PlayingRole = BATSMAN
+                    CricInfoId = 437446,
+                    CricsheetName = "AG Harriott",
+                    IsActive = true,
+                    PlayingRole = BATSMAN
                 });
 
-            //_unavailablePlayers.Add("AG Harriott",
-            //    new Player
-            //    {
-            //        CricInfoId = 437446,
-            //        CricsheetName = "AG Harriott",
-            //        FullName = "Andrew G Harriott",
-            //        Name = "Andrew Harriott",
-            //        DateOfBirth = null,
-            //        BattingStyle = "Right-hand bat",
-            //        BowlingStyle = "Right-hand bat",
-            //        PlayingRole = BATSMAN,
-            //        IsActive = true,
-            //    });
+            _unavailablePlayers.Add("H Kerr",
+                new Player
+                {
+                    CricInfoId = 1163855,
+                    CricsheetName = "H Kerr",
+                    Name = "Hayden Kerr",
+                    FullName = "Hayden Kerr",
+                    DateOfBirth = new DateTime(1996, 07, 10),
+                    BattingStyle = "Right-hand bat",
+                    BowlingStyle = "Left-arm fast-medium",
+                    PlayingRole = ALLROUNDER,
+                    IsActive = true,
+                });
+
+            _unavailablePlayers.Add("NT Ellis",
+                new Player
+                {
+                    CricInfoId = 826915,
+                    CricsheetName = "NT Ellis",
+                    Name = "Nathan Ellis",
+                    FullName = "Nathan Ellis",
+                    DateOfBirth = new DateTime(1994, 09, 22),
+                    BattingStyle = "Right-hand bat",
+                    BowlingStyle = "Right-arm medium",
+                    PlayingRole = ALLROUNDER,
+                    IsActive = true,
+                });
+
+            _unavailablePlayers.Add("LR Morris",
+                new Player
+                {
+                    CricInfoId = 1125317,
+                    CricsheetName = "LR Morris",
+                    Name = "Lance Morris",
+                    FullName = "Lance R Morris",
+                    DateOfBirth = new DateTime(1998, 03, 28),
+                    BattingStyle = "Right-hand bat",
+                    BowlingStyle = "Right-arm medium",
+                    PlayingRole = BOWLER,
+                    IsActive = true,
+                });
+
+            _unavailablePlayers.Add("J Morgan",
+                new Player
+                {
+                    CricInfoId = 605573,
+                    CricsheetName = "J Morgan",
+                    Name = "Jaron Morgan",
+                    FullName = "Jaron Morgan",
+                    DateOfBirth = new DateTime(1995, 09, 27),
+                    BattingStyle = "Left-hand bat",
+                    BowlingStyle = "Legbreak",
+                    PlayingRole = BATSMAN,
+                    IsActive = true,
+                });
+
+            _unavailablePlayers.Add("NA McSweeney",
+                new Player
+                {
+                    CricInfoId = 1124290,
+                    CricsheetName = "NA McSweeney",
+                    Name = "Nathan McSweeney",
+                    FullName = "Nathan A McSweeney",
+                    DateOfBirth = new DateTime(1999, 03, 08),
+                    BattingStyle = "Right-hand bat",
+                    BowlingStyle = "Right-arm offbreak",
+                    PlayingRole = BOWLER,
+                    IsActive = true,
+                });
+
+            _unavailablePlayers.Add("Dilbar Hussain",
+                new Player
+                {
+                    CricInfoId = 1206623,
+                    CricsheetName = "Dilbar Hussain",
+                    Name = "Dilbar Hussain",
+                    FullName = "Dilbar Hussain",
+                    DateOfBirth = new DateTime(1993, 02, 20),
+                    BattingStyle = "Right-hand bat",
+                    BowlingStyle = "Right-arm fast-medium",
+                    PlayingRole = BOWLER,
+                    IsActive = true,
+                });
+
+            _unavailablePlayers.Add("Z Evans",
+                new Player
+                {
+                    CricInfoId = 1088612,
+                    CricsheetName = "Z Evans",
+                    Name = "Zak Evans",
+                    FullName = "Zak Evans",
+                    DateOfBirth = new DateTime(2000, 03, 26),
+                    BattingStyle = "Right-hand bat",
+                    BowlingStyle = "Right-arm medium-fast",
+                    PlayingRole = BOWLER,
+                    IsActive = true,
+                });
+
+            _unavailablePlayers.Add("PJ Hughes",
+                new Player
+                {
+                    CricInfoId = 272364,
+                    CricsheetName = "PJ Hughes",
+                    Name = "Phillip Hughes",
+                    FullName = "Phillip Joel Hughes",
+                    DateOfBirth = new DateTime(1988, 11, 30),
+                    BattingStyle = "Left-hand bat",
+                    BowlingStyle = null,
+                    PlayingRole = BATSMAN,
+                    IsActive = true,
+                });
+
+            _unavailablePlayers.Add("RR Ayre",
+                new Player
+                {
+                    CricInfoId = 638911,
+                    CricsheetName = "RR Ayre",
+                    Name = "Riley Ayre",
+                    FullName = "Riley R Ayre",
+                    DateOfBirth = new DateTime(1996, 04, 02),
+                    BattingStyle = "Right-hand bat",
+                    BowlingStyle = "Slow left-arm orthodox",
+                    PlayingRole = BOWLER,
+                    IsActive = true,
+                });
 
             foreach (var plr in _preloadedPlayers)
             {
-                var player = _playerContext.Players.FirstOrDefault(p => p.CricInfoId == plr.Item2);
+                var player = _playerContext.Players.First(p => p.CricInfoId == plr.Item2);
 
-                if (player == null)
-                {
-                    player = _unavailablePlayers[plr.Item1];
-                    _playerContext.Players.Add(player);
-                }
-                else
-                {
-                    player.CricsheetName = plr.Item1;
-                }
+                player.CricsheetName = plr.Item1;
 
                 _players.Add(plr.Item1, player);
+            }
+
+            foreach (var unavailablePlayer in _unavailablePlayers)
+            {
+                _playerContext.Players.Add(unavailablePlayer.Value);
+                _players.Add(unavailablePlayer.Key, unavailablePlayer.Value);
             }
 
             _playerContext.SaveChanges();
