@@ -45,7 +45,7 @@ namespace PlayerDataGenerator
                 new Tuple<string, int>("Rashid Khan", 793463),
                 new Tuple<string, int>("J Edwards", 1088610),
                 new Tuple<string, int>("C Green", 1076713),
-                new Tuple<string, int>("TL O''Connell", 1159591),
+                new Tuple<string, int>("TL O'Connell", 1159591),
                 new Tuple<string, int>("SJ Coyte (2)", 4886),
                 new Tuple<string, int>("MJ Buchanan", 505118),
                 new Tuple<string, int>("OA Shah", 20123),
@@ -53,6 +53,31 @@ namespace PlayerDataGenerator
                 new Tuple<string, int>("TM Dilshan", 48472),
                 new Tuple<string, int>("Mohammad Hafeez", 41434),
                 new Tuple<string, int>("DPMD Jayawardene", 49289),
+                new Tuple<string, int>("A Choudhary", 527299),
+                new Tuple<string, int>("B Kumar", 326016),
+                new Tuple<string, int>("RG Sharma", 34102),
+                new Tuple<string, int>("R Bhatia", 26907),
+                new Tuple<string, int>("P Kumar", 30732),
+                new Tuple<string, int>("Sandeep Sharma", 438362),
+                new Tuple<string, int>("Z Khan", 30102),
+                new Tuple<string, int>("A Mishra", 31107),
+                new Tuple<string, int>("R Dhawan", 290727),
+                new Tuple<string, int>("CJ Anderson", 277662),
+                new Tuple<string, int>("MM Patel", 32965),
+                new Tuple<string, int>("J Yadav", 447587),
+                new Tuple<string, int>("R Powell", 820351),
+                new Tuple<string, int>("Gurkeerat Singh", 537124),
+                new Tuple<string, int>("RK Singh", 723105),
+                new Tuple<string, int>("JP Duminy", 44932),
+                new Tuple<string, int>("PP Shaw", 1070168),
+                new Tuple<string, int>("Abhishek Sharma", 1070183),
+                new Tuple<string, int>("Y Prithvi Raj", 1121579),
+                new Tuple<string, int>("O Thomas", 914567),
+                new Tuple<string, int>("RP Singh", 35280),
+                new Tuple<string, int>("Mohammad Asif", 41411),
+                new Tuple<string, int>("Gagandeep Singh", 28758),
+                new Tuple<string, int>("S Vidyut", 35619),
+                new Tuple<string, int>("A Chopra", 27639),
             };
 
             _unavailablePlayers.Add("AG Harriott",
@@ -194,6 +219,76 @@ namespace PlayerDataGenerator
                     IsActive = true,
                 });
 
+            _unavailablePlayers.Add("A Dananjaya",
+               new Player
+               {
+                   CricInfoId = 574178,
+                   CricsheetName = "A Dananjaya",
+                   Name = "Akila Dananjaya",
+                   FullName = "Mahamarakkala Kurukulasooriya Patabendige Akila Dananjaya Perera",
+                   DateOfBirth = new DateTime(1993, 10, 04),
+                   BattingStyle = "Left-hand bat",
+                   BowlingStyle = "Right-arm offbreak",
+                   PlayingRole = ALLROUNDER,
+                   IsActive = true,
+               });
+
+            _unavailablePlayers.Add("CV Varun",
+                          new Player
+                          {
+                              CricInfoId = 1108375,
+                              CricsheetName = "CV Varun",
+                              Name = "Varun Chakravarthy",
+                              FullName = "Varun Chakravarthy Vinod",
+                              DateOfBirth = new DateTime(1991, 08, 29),
+                              BattingStyle = "Right-hand bat",
+                              BowlingStyle = "Legbreak googly",
+                              PlayingRole = BOWLER,
+                              IsActive = true,
+                          });
+
+            _unavailablePlayers.Add("Arshdeep Singh",
+                           new Player
+                           {
+                               CricInfoId = 1125976,
+                               CricsheetName = "Arshdeep Singh",
+                               Name = "Arshdeep Singh",
+                               FullName = "Arshdeep Singh",
+                               DateOfBirth = new DateTime(1999, 02, 05),
+                               BattingStyle = "Left-hand bat",
+                               BowlingStyle = "Left-arm medium-fast",
+                               PlayingRole = BOWLER,
+                               IsActive = true,
+                           });
+
+            _unavailablePlayers.Add("Harpreet Brar",
+                           new Player
+                           {
+                               CricInfoId = 1168641,
+                               CricsheetName = "Harpreet Brar",
+                               Name = "Harpreet Brar",
+                               FullName = "Harpreet Brar",
+                               DateOfBirth = new DateTime(1995, 09, 16),
+                               BattingStyle = "Left-hand bat",
+                               BowlingStyle = "Slow left-arm orthodox",
+                               PlayingRole = BOWLER,
+                               IsActive = true,
+                           });
+
+            _unavailablePlayers.Add("AS Roy",
+                           new Player
+                           {
+                               CricInfoId = 1079839,
+                               CricsheetName = "AS Roy",
+                               Name = "Anukul Roy",
+                               FullName = "Anukul Sudhakar Roy",
+                               DateOfBirth = new DateTime(1998, 01, 30),
+                               BattingStyle = "Left-hand bat",
+                               BowlingStyle = "Slow left-arm orthodox",
+                               PlayingRole = ALLROUNDER,
+                               IsActive = true,
+                           });
+
             foreach (var plr in _preloadedPlayers)
             {
                 var player = _playerContext.Players.First(p => p.CricInfoId == plr.Item2);
@@ -205,8 +300,11 @@ namespace PlayerDataGenerator
 
             foreach (var unavailablePlayer in _unavailablePlayers)
             {
-                _playerContext.Players.Add(unavailablePlayer.Value);
-                _players.Add(unavailablePlayer.Key, unavailablePlayer.Value);
+                if(_playerContext.Players.FirstOrDefault(p => p.CricInfoId == unavailablePlayer.Value.CricInfoId) != null)
+                { 
+                    _playerContext.Players.Add(unavailablePlayer.Value);
+                    _players.Add(unavailablePlayer.Key, unavailablePlayer.Value);
+                }
             }
 
             _playerContext.SaveChanges();
@@ -258,7 +356,7 @@ namespace PlayerDataGenerator
                             }
 
                             stringBuilder.AppendLine(
-                                $"exception: {e.Message}, Player Name: {player} + yaml- {file.Name}, matchDate - {match.MatchInfo.Dates}, matchTeams - {string.Join("-", match.MatchInfo.Teams)} ");
+                                $"exception: {e.Message}, Player Name: {player} + yaml- {file.Name}, matchDate - {match.MatchInfo.Dates.First().ToShortDateString()}, matchTeams - {string.Join("-", match.MatchInfo.Teams)} ");
                         }
 
                     }
@@ -373,8 +471,8 @@ namespace PlayerDataGenerator
                     var dbMiddleName = string.Empty;
                     if (dbNames.Length > 2) dbMiddleName = dbNames.Skip(1).FirstOrDefault();
 
-                    if (firstName.ToUpper() == dbFirstName.ToUpper() &&
-                        lastName.ToUpper() == dbLastName.ToUpper() &&
+                    if (string.Equals(firstName.ToUpper(), dbFirstName.ToUpper(), StringComparison.Ordinal) &&
+                        string.Equals(lastName, dbLastName, StringComparison.CurrentCultureIgnoreCase) &&
                         middleName?.ToUpper() == dbMiddleName?.ToUpper())
                     {
                         foundPlayers.Add(dbPlayer);
