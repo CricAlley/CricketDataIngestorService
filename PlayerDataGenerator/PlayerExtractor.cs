@@ -78,6 +78,10 @@ namespace PlayerDataGenerator
                 new Tuple<string, int>("Gagandeep Singh", 28758),
                 new Tuple<string, int>("S Vidyut", 35619),
                 new Tuple<string, int>("A Chopra", 27639),
+                new Tuple<string, int>("T Thushara", 49677),
+                new Tuple<string, int>("Kamran Khan", 391121),
+                new Tuple<string, int>("Harmeet Singh", 391128),
+                new Tuple<string, int>("R Bishnoi", 236766),
             };
 
             _unavailablePlayers.Add("AG Harriott",
