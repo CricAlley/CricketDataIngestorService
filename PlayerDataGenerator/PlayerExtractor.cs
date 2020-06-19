@@ -82,6 +82,12 @@ namespace PlayerDataGenerator
                 new Tuple<string, int>("Kamran Khan", 391121),
                 new Tuple<string, int>("Harmeet Singh", 391128),
                 new Tuple<string, int>("R Bishnoi", 236766),
+                new Tuple<string, int>("Shoaib Ahmed", 317709),
+                new Tuple<string, int>("AN Ghosh", 220435),
+                new Tuple<string, int>("SS Sarkar", 34402),
+                new Tuple<string, int>("S Randiv", 50438),
+                new Tuple<string, int>("S Rana", 33757),
+                new Tuple<string, int>("Harmeet Singh (2)", 422847),
             };
 
             _unavailablePlayers.Add("AG Harriott",
@@ -304,11 +310,13 @@ namespace PlayerDataGenerator
 
             foreach (var unavailablePlayer in _unavailablePlayers)
             {
-                if(_playerContext.Players.FirstOrDefault(p => p.CricInfoId == unavailablePlayer.Value.CricInfoId) != null)
+                if(_playerContext.Players.FirstOrDefault(p => p.CricInfoId == unavailablePlayer.Value.CricInfoId) == null)
                 { 
                     _playerContext.Players.Add(unavailablePlayer.Value);
-                    _players.Add(unavailablePlayer.Key, unavailablePlayer.Value);
                 }
+
+                _players.TryAdd(unavailablePlayer.Key, unavailablePlayer.Value);
+
             }
 
             _playerContext.SaveChanges();
