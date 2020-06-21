@@ -95,6 +95,8 @@ namespace PlayerDataGenerator
             _excludedTeams.Add("Saudi Arabia");
             _excludedTeams.Add("Bahrain");
             _excludedTeams.Add("Iran");
+            _excludedTeams.Add("Ireland");
+            _excludedTeams.Add("Zimbabwe");
 
 
             _preloadedPlayers = new List<Tuple<string, int>>
