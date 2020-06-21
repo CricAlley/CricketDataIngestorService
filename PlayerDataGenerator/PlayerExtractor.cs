@@ -25,12 +25,78 @@ namespace PlayerDataGenerator
         private readonly Dictionary<string, Player> _players;
         private readonly Dictionary<string, string> _failedPlayers =  new Dictionary<string, string>();
         private readonly Dictionary<string, Player> _unavailablePlayers =  new Dictionary<string, Player>();
+        protected  List<string> _excludedTeams = new List<string>();
+        protected List<string> _teams = new List<string>();
 
         public PlayerExtractor(GeneralSettings generalSettings, PlayerContext playerContext)
         {
             _generalSettings = generalSettings;
             _playerContext = playerContext;
             _players = new Dictionary<string, Player>();
+
+            _excludedTeams.Add("Nottinghamshire");
+            _excludedTeams.Add("Worcestershire");
+            _excludedTeams.Add("Glamorgan");
+            _excludedTeams.Add("Somerset");
+            _excludedTeams.Add("Durham");
+            _excludedTeams.Add("Northamptonshire");
+            _excludedTeams.Add("Essex");
+            _excludedTeams.Add("Surrey");
+            _excludedTeams.Add("Gloucestershire");
+            _excludedTeams.Add("Kent");
+            _excludedTeams.Add("Derbyshire");
+            _excludedTeams.Add("Yorkshire");
+            _excludedTeams.Add("Lancashire");
+            _excludedTeams.Add("Birmingham Bears");
+            _excludedTeams.Add("Leicestershire");
+            _excludedTeams.Add("Hampshire");
+            _excludedTeams.Add("Middlesex");
+            _excludedTeams.Add("Sussex");
+            _excludedTeams.Add("Warwickshire");
+            _excludedTeams.Add("Scotland");
+            _excludedTeams.Add("Afghanistan");
+            _excludedTeams.Add("Hong Kong");
+            _excludedTeams.Add("Zimbabwe");
+            _excludedTeams.Add("Papua New Guinea");
+            _excludedTeams.Add("United Arab Emirates");
+            _excludedTeams.Add("Nepal");
+            _excludedTeams.Add("United States of America");
+            _excludedTeams.Add("Namibia");
+            _excludedTeams.Add("Oman");
+            _excludedTeams.Add("Netherlands");
+            _excludedTeams.Add("Bermuda");
+            _excludedTeams.Add("Canada");
+            _excludedTeams.Add("Kenya");
+            _excludedTeams.Add("Africa XI");
+            _excludedTeams.Add("Asia XI");
+            _excludedTeams.Add("Philippines");
+            _excludedTeams.Add("Vanuatu");
+            _excludedTeams.Add("Germany");
+            _excludedTeams.Add("Italy");
+            _excludedTeams.Add("Ghana");
+            _excludedTeams.Add("Uganda");
+            _excludedTeams.Add("Botswana");
+            _excludedTeams.Add("Nigeria");
+            _excludedTeams.Add("Guernsey");
+            _excludedTeams.Add("Denmark");
+            _excludedTeams.Add("Norway");
+            _excludedTeams.Add("Jersey");
+            _excludedTeams.Add("Malaysia");
+            _excludedTeams.Add("Thailand");
+            _excludedTeams.Add("Maldives");
+            _excludedTeams.Add("Singapore");
+            _excludedTeams.Add("Qatar");
+            _excludedTeams.Add("Kuwait");
+            _excludedTeams.Add("Cayman Islands");
+            _excludedTeams.Add("Spain");
+            _excludedTeams.Add("Portugal");
+            _excludedTeams.Add("Gibraltar");
+            _excludedTeams.Add("Bhutan");
+            _excludedTeams.Add("Saudi Arabia");
+            _excludedTeams.Add("Bahrain");
+            _excludedTeams.Add("Iran");
+
+
             _preloadedPlayers = new List<Tuple<string, int>>
             {
                 new Tuple<string, int>("A Singh", 26789),
@@ -330,6 +396,7 @@ namespace PlayerDataGenerator
             var directoryInfos = directoryInfo.GetDirectories();
             var yamlParser = new YamlParser.YamlParser();
             var stringBuilder = new StringBuilder();
+            var teamsBuilder = new StringBuilder();
 
             int count = 0;
 
@@ -340,6 +407,23 @@ namespace PlayerDataGenerator
                 foreach (var file in files)
                 {
                     var match = yamlParser.Parse(file.FullName);
+
+                    var isBothTeamsExcluded = match.MatchInfo.Teams.All(s => _excludedTeams.Any(t => t == s));
+
+                    if (isBothTeamsExcluded)
+                    {
+                        continue;
+                    }
+
+                    foreach (var team in match.MatchInfo.Teams)
+                    {
+                        if (_teams.All(t => t != team))
+                        {
+                            teamsBuilder.AppendLine(@"_excludedTeams.Add(" + $"{team}"+ ");");
+                            _teams.Add(team);
+                        }
+                    }
+
 
                     var players = match.GetPlayers();
 
@@ -377,7 +461,8 @@ namespace PlayerDataGenerator
 
             stringBuilder.Append($"Unable to Map {count} Players ");
 
-            File.WriteAllText("PlayersData.sql", stringBuilder.ToString());
+            File.WriteAllText("PlayersData.txt", stringBuilder.ToString());
+            File.WriteAllText("Teams.txt", teamsBuilder.ToString());
             Console.WriteLine("Extraction Complete");
 
             if(_failedPlayers.Count> 0)
