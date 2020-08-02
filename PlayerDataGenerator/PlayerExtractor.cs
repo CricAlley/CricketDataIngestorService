@@ -23,9 +23,9 @@ namespace PlayerDataGenerator
         private readonly PlayerContext _playerContext;
         private readonly List<Tuple<string, int>> _preloadedPlayers;
         private readonly Dictionary<string, Player> _players;
-        private readonly Dictionary<string, string> _failedPlayers =  new Dictionary<string, string>();
-        private readonly Dictionary<string, Player> _unavailablePlayers =  new Dictionary<string, Player>();
-        protected  List<string> _excludedTeams = new List<string>();
+        private readonly Dictionary<string, string> _failedPlayers = new Dictionary<string, string>();
+        private readonly Dictionary<string, Player> _unavailablePlayers = new Dictionary<string, Player>();
+        protected List<string> _excludedTeams = new List<string>();
         protected List<string> _teams = new List<string>();
 
         public PlayerExtractor(GeneralSettings generalSettings, PlayerContext playerContext)
@@ -33,6 +33,12 @@ namespace PlayerDataGenerator
             _generalSettings = generalSettings;
             _playerContext = playerContext;
             _players = new Dictionary<string, Player>();
+
+            //bbl_male
+            //ipl_male
+            //ntb_male
+            //odis_male
+            //t20s_male
 
             _excludedTeams.Add("Nottinghamshire");
             _excludedTeams.Add("Worcestershire");
@@ -156,6 +162,32 @@ namespace PlayerDataGenerator
                 new Tuple<string, int>("S Randiv", 50438),
                 new Tuple<string, int>("S Rana", 33757),
                 new Tuple<string, int>("Harmeet Singh (2)", 422847),
+                new Tuple<string, int>("Mohammad Nawaz (3)", 348148),
+                new Tuple<string, int>("BJ Watling", 38924),
+                new Tuple<string, int>("SC Williams", 55870),
+                new Tuple<string, int>("T Maruma", 235524),
+                new Tuple<string, int>("T Mupariwa", 55652),
+                new Tuple<string, int>("D Pretorius", 327830),
+                new Tuple<string, int>("N Pradeep", 324358),
+                new Tuple<string, int>("N Dickwella", 429754),
+                new Tuple<string, int>("Mehedi Hasan Miraz", 629063),
+                new Tuple<string, int>("Fahim Ashraf", 681117),
+                new Tuple<string, int>("Mohammad Shahzad", 419873), // wrong DOB
+                new Tuple<string, int>("Asghar Stanikzai", 320652),
+                new Tuple<string, int>("Samiullah Shenwari", 318339),
+                new Tuple<string, int>("GSNFG Jayasuriya", 422965),
+                new Tuple<string, int>("MDK Perera", 300631),
+                new Tuple<string, int>("LD Madushanka", 428366),
+                new Tuple<string, int>("Shaheen Shah Afridi", 1072470),
+                new Tuple<string, int>("I Udana", 328026),
+                new Tuple<string, int>("Hazratullah", 793457),
+                new Tuple<string, int>("Asif Ali", 494230),
+                new Tuple<string, int>("Ikram Alikhil", 935553),
+                new Tuple<string, int>("Aftab Alam", 440963),
+                new Tuple<string, int>("Mohammad Hasnain", 1158100),
+                new Tuple<string, int>("Abid Ali", 39950),
+                new Tuple<string, int>("L Sipamla", 698143),
+                new Tuple<string, int>("S Mahmood", 643885),
             };
 
             _unavailablePlayers.Add("AG Harriott",
@@ -367,7 +399,7 @@ namespace PlayerDataGenerator
                                IsActive = true,
                            });
 
-            foreach (var plr in _preloadedPlayers)
+            foreach(var plr in _preloadedPlayers)
             {
                 var player = _playerContext.Players.First(p => p.CricInfoId == plr.Item2);
 
@@ -376,10 +408,10 @@ namespace PlayerDataGenerator
                 _players.Add(plr.Item1, player);
             }
 
-            foreach (var unavailablePlayer in _unavailablePlayers)
+            foreach(var unavailablePlayer in _unavailablePlayers)
             {
                 if(_playerContext.Players.FirstOrDefault(p => p.CricInfoId == unavailablePlayer.Value.CricInfoId) == null)
-                { 
+                {
                     _playerContext.Players.Add(unavailablePlayer.Value);
                 }
 
@@ -402,26 +434,26 @@ namespace PlayerDataGenerator
 
             int count = 0;
 
-            foreach (var directory in directoryInfos)
+            foreach(var directory in directoryInfos)
             {
                 var files = directory.GetFiles("*.yaml");
 
-                foreach (var file in files)
+                foreach(var file in files)
                 {
                     var match = yamlParser.Parse(file.FullName);
 
                     var isBothTeamsExcluded = match.MatchInfo.Teams.All(s => _excludedTeams.Any(t => t == s));
 
-                    if (isBothTeamsExcluded)
+                    if(isBothTeamsExcluded)
                     {
                         continue;
                     }
 
-                    foreach (var team in match.MatchInfo.Teams)
+                    foreach(var team in match.MatchInfo.Teams)
                     {
-                        if (_teams.All(t => t != team))
+                        if(_teams.All(t => t != team))
                         {
-                            teamsBuilder.AppendLine(@"_excludedTeams.Add(" + $"{team}"+ ");");
+                            teamsBuilder.AppendLine(@"_includedTeams.Add(" + $"{team}" + ");");
                             _teams.Add(team);
                         }
                     }
@@ -429,22 +461,22 @@ namespace PlayerDataGenerator
 
                     var players = match.GetPlayers();
 
-                    foreach (var player in players)
+                    foreach(var player in players)
                     {
                         try
                         {
                             UpdatePlayer(player);
                         }
-                        catch (Exception e)
+                        catch(Exception e)
                         {
-                            if (_failedPlayers.ContainsKey(player))
+                            if(_failedPlayers.ContainsKey(player))
                             {
                                 continue;
                             }
 
                             count++;
 
-                            if (_players.ContainsKey(player))
+                            if(_players.ContainsKey(player))
                             {
                                 _failedPlayers.Add(player, _players[player].FullName);
                             }
@@ -467,7 +499,7 @@ namespace PlayerDataGenerator
             File.WriteAllText("Teams.txt", teamsBuilder.ToString());
             Console.WriteLine("Extraction Complete");
 
-            if(_failedPlayers.Count> 0)
+            if(_failedPlayers.Count > 0)
                 throw new Exception($"there are {count} unmapped players. Please Map them.");
             Console.ReadKey();
         }
@@ -476,7 +508,7 @@ namespace PlayerDataGenerator
         {
             player = player.Replace(" (sub)", "");
 
-            if (_players.ContainsKey(player) || _failedPlayers.ContainsKey(player)) return;
+            if(_players.ContainsKey(player) || _failedPlayers.ContainsKey(player)) return;
 
             List<Player> foundPlayers = new List<Player>();
 
@@ -487,20 +519,20 @@ namespace PlayerDataGenerator
             var isInitials = firstName.ToCharArray().All(c => c == char.ToUpper(c));
 
             var middleName = string.Empty;
-            if (names.Length > 2) middleName = names.Skip(1).First();
+            if(names.Length > 2) middleName = names.Skip(1).First();
 
-            if (isInitials)
+            if(isInitials)
             {
                 var dbPlayers = _playerContext.Players.Where(player1 =>
                     player1.FullName.ToUpper().Contains(lastName.ToUpper()) && player1.IsActive).ToList();
 
-                if (!dbPlayers.Any())
+                if(!dbPlayers.Any())
                 {
                     throw new Exception("Player not present");
 
                 }
 
-                foreach (var dbPlayer in dbPlayers)
+                foreach(var dbPlayer in dbPlayers)
                 {
                     var dbNames = dbPlayer.FullName.Split(' ');
                     var dbLastName = dbNames.Last();
@@ -508,41 +540,41 @@ namespace PlayerDataGenerator
                     var isDbNameInitials = dbFirstName.ToCharArray().All(c => c == char.ToUpper(c));
 
                     var isfound = false;
-                    if (dbLastName.ToUpper() == lastName.ToUpper())
+                    if(dbLastName.ToUpper() == lastName.ToUpper())
                     {
                         isfound = true;
                         var j = 0;
-                        for (var i = 0; i < firstName.Length; i++, j++)
+                        for(var i = 0; i < firstName.Length; i++, j++)
                         {
-                            if (dbNames[i][0] != firstName[i])
+                            if(dbNames[i][0] != firstName[i])
                             {
                                 isfound = false;
                                 break;
                             }
                         }
 
-                        if (!string.IsNullOrWhiteSpace(middleName) && dbNames[j].ToUpper() != middleName.ToUpper())
+                        if(!string.IsNullOrWhiteSpace(middleName) && dbNames[j].ToUpper() != middleName.ToUpper())
                         {
                             isfound = false;
                         }
 
-                        if (isDbNameInitials)
+                        if(isDbNameInitials)
                         {
                             isfound = dbFirstName == firstName;
                         }
                     }
 
-                    if (isfound)
+                    if(isfound)
                     {
                         foundPlayers.Add(dbPlayer);
                     }
                 }
 
-                if (!foundPlayers.Any())
+                if(!foundPlayers.Any())
                 {
                     throw new NullReferenceException("Player not found");
                 }
-                else if (foundPlayers.Count > 1)
+                else if(foundPlayers.Count > 1)
                 {
                     throw new AmbiguousMatchException("Multiple Players found for same key");
                 }
@@ -557,20 +589,20 @@ namespace PlayerDataGenerator
             {
                 var dbPlayers = _playerContext.Players.Where(player1 =>
                     player1.FullName.ToUpper().Contains(firstName.ToUpper()) && player1.IsActive).ToList();
-                if (!dbPlayers.Any())
+                if(!dbPlayers.Any())
                 {
                     throw new Exception("Player not present");
                 }
 
-                foreach (var dbPlayer in dbPlayers)
+                foreach(var dbPlayer in dbPlayers)
                 {
                     var dbNames = dbPlayer.Name.Split(' ');
                     var dbFirstName = dbNames.First();
                     var dbLastName = dbNames.Last();
                     var dbMiddleName = string.Empty;
-                    if (dbNames.Length > 2) dbMiddleName = dbNames.Skip(1).FirstOrDefault();
+                    if(dbNames.Length > 2) dbMiddleName = dbNames.Skip(1).FirstOrDefault();
 
-                    if (string.Equals(firstName.ToUpper(), dbFirstName.ToUpper(), StringComparison.Ordinal) &&
+                    if(string.Equals(firstName.ToUpper(), dbFirstName.ToUpper(), StringComparison.Ordinal) &&
                         string.Equals(lastName, dbLastName, StringComparison.CurrentCultureIgnoreCase) &&
                         middleName?.ToUpper() == dbMiddleName?.ToUpper())
                     {
@@ -578,7 +610,7 @@ namespace PlayerDataGenerator
                     }
                 }
 
-                if (!foundPlayers.Any())
+                if(!foundPlayers.Any())
                 {
                     throw new NullReferenceException("Player not found");
                 }
@@ -588,7 +620,7 @@ namespace PlayerDataGenerator
                 }
                 else
                 {
-                    var dbPlayer = foundPlayers.First();   
+                    var dbPlayer = foundPlayers.First();
                     _players.Add(player, dbPlayer);
                     dbPlayer.CricsheetName = player;
                 }
