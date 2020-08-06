@@ -24,6 +24,7 @@ namespace PlayerDataGenerator
         private readonly List<Tuple<string, int>> _preloadedPlayers;
         private readonly Dictionary<string, Player> _players;
         private readonly Dictionary<string, string> _failedPlayers = new Dictionary<string, string>();
+        private readonly Dictionary<string, int> _substitutePlayerDictionary = new Dictionary<string, int>();
         private readonly Dictionary<string, Player> _unavailablePlayers = new Dictionary<string, Player>();
         protected List<string> _excludedTeams = new List<string>();
         protected List<string> _teams = new List<string>();
@@ -188,7 +189,57 @@ namespace PlayerDataGenerator
                 new Tuple<string, int>("Abid Ali", 39950),
                 new Tuple<string, int>("L Sipamla", 698143),
                 new Tuple<string, int>("S Mahmood", 643885),
+                new Tuple<string, int>("S Samarawickrama", 629076),
+                new Tuple<string, int>("M Bhanuka", 629075),
+                new Tuple<string, int>("Nazmul Hossain Shanto", 629058),
+                new Tuple<string, int>("J Lewis", 16281),
+                new Tuple<string, int>("GJP Kruger", 45888),
+                new Tuple<string, int>("Martyn", 45888),
+                new Tuple<string, int>("Mohammad Sami", 41324),
+                new Tuple<string, int>("Aftab Ahmed", 56266),
+                new Tuple<string, int>("DR Brown", 9254),
+                new Tuple<string, int>("RM Haq", 25451),
+                new Tuple<string, int>("CJ Smith", 23691),
+                new Tuple<string, int>("Mohammad Kashif", 243073),
+                new Tuple<string, int>("S Dhaniram", 51738),
+                new Tuple<string, int>("TM Odoyo", 24705),
+                new Tuple<string, int>("LN Onyango", 24711),
+                new Tuple<string, int>("AO Suji", 24723),
+                new Tuple<string, int>("KO Otieno", 24714),
+                new Tuple<string, int>("JS Ababu", 24768),
             };
+
+            _substitutePlayerDictionary.Add("Martyn", 6513); // Damien martyn
+            _substitutePlayerDictionary.Add("Kapugedera", 209457); 
+            _substitutePlayerDictionary.Add("Astle", 36185);
+
+            _unavailablePlayers.Add("Manjural Islam Rana",
+                new Player
+                {
+                    CricInfoId = 55991,
+                    CricsheetName = "Manjural Islam Rana",
+                    Name = "Manzarul Islam",
+                    FullName = "Qazi Manzarul Islam",
+                    DateOfBirth = new DateTime(1984, 05, 04),
+                    BattingStyle = "Left-hand bat",
+                    BowlingStyle = "Slow left-arm orthodox",
+                    PlayingRole = ALLROUNDER,
+                    IsActive = true,
+                });
+
+            _unavailablePlayers.Add("RS Morton",
+                new Player
+                {
+                    CricInfoId = 52445,
+                    CricsheetName = "RS Morton",
+                    Name = "Runako Morton",
+                    FullName = "Runako Shakur Morton",
+                    DateOfBirth = new DateTime(1978, 07, 22),
+                    BattingStyle = "Right-hand bat",
+                    BowlingStyle = "Right-arm medium",
+                    PlayingRole = BATSMAN,
+                    IsActive = true,
+                });
 
             _unavailablePlayers.Add("AG Harriott",
                 new Player
@@ -201,6 +252,34 @@ namespace PlayerDataGenerator
                     CricsheetName = "AG Harriott",
                     IsActive = true,
                     PlayingRole = BATSMAN
+                });
+
+            _unavailablePlayers.Add("W Madhevere",
+                new Player
+                {
+                    CricInfoId = 938959,
+                    CricsheetName = "W Madhevere",
+                    Name = "Wesley Madhevere",
+                    FullName = "Wesley Nyasha Madhevere",
+                    DateOfBirth = new DateTime(2000, 09, 04),
+                    BattingStyle = "Right-hand bat",
+                    BowlingStyle = "Right-arm offbreak",
+                    PlayingRole = ALLROUNDER,
+                    IsActive = true,
+                });
+
+            _unavailablePlayers.Add("R Shepherd",
+                new Player
+                {
+                    CricInfoId = 677077,
+                    CricsheetName = "R Shepherd",
+                    Name = "Romario Shepherd",
+                    FullName = "Romario Shepherd",
+                    DateOfBirth = new DateTime(1994, 11, 26),
+                    BattingStyle = "Right-hand bat",
+                    BowlingStyle = "Right-arm medium-fast",
+                    PlayingRole = BOWLER,
+                    IsActive = true,
                 });
 
             _unavailablePlayers.Add("H Kerr",
@@ -508,7 +587,7 @@ namespace PlayerDataGenerator
         {
             player = player.Replace(" (sub)", "");
 
-            if(_players.ContainsKey(player) || _failedPlayers.ContainsKey(player)) return;
+            if(_players.ContainsKey(player) || _failedPlayers.ContainsKey(player) || _substitutePlayerDictionary.ContainsKey(player)) return;
 
             List<Player> foundPlayers = new List<Player>();
 
