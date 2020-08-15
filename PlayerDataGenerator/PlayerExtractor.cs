@@ -24,7 +24,7 @@ namespace PlayerDataGenerator
         private readonly List<Tuple<string, int>> _preloadedPlayers;
         private readonly Dictionary<string, Player> _players;
         private readonly Dictionary<string, string> _failedPlayers = new Dictionary<string, string>();
-        private readonly Dictionary<string, int> _substitutePlayerDictionary = new Dictionary<string, int>();
+        private readonly Dictionary<string, int> _playerAliases = new Dictionary<string, int>();
         private readonly Dictionary<string, Player> _unavailablePlayers = new Dictionary<string, Player>();
         protected List<string> _excludedTeams = new List<string>();
         protected List<string> _teams = new List<string>();
@@ -108,377 +108,33 @@ namespace PlayerDataGenerator
 
             _preloadedPlayers = new List<Tuple<string, int>>
             {
-                new Tuple<string, int>("A Singh", 26789),
-                new Tuple<string, int>("Jaskaran Singh", 376102),
-                new Tuple<string, int>("R Sharma", 272994),
-                new Tuple<string, int>("N Saini", 274785),
-                new Tuple<string, int>("R Shukla", 390547),
-                new Tuple<string, int>("GS Sandhu", 499660),
-                new Tuple<string, int>("HTRY Thornton", 837611),
-                new Tuple<string, int>("Shadab Khan", 922943),
-                new Tuple<string, int>("D Morton", 922943),
-                new Tuple<string, int>("Rashid Khan", 793463),
-                new Tuple<string, int>("J Edwards", 1088610),
-                new Tuple<string, int>("C Green", 1076713),
-                new Tuple<string, int>("TL O'Connell", 1159591),
-                new Tuple<string, int>("SJ Coyte (2)", 4886),
-                new Tuple<string, int>("MJ Buchanan", 505118),
-                new Tuple<string, int>("OA Shah", 20123),
-                new Tuple<string, int>("Yasir Arafat", 43654),
-                new Tuple<string, int>("TM Dilshan", 48472),
-                new Tuple<string, int>("Mohammad Hafeez", 41434),
-                new Tuple<string, int>("DPMD Jayawardene", 49289),
-                new Tuple<string, int>("A Choudhary", 527299),
-                new Tuple<string, int>("B Kumar", 326016),
-                new Tuple<string, int>("RG Sharma", 34102),
-                new Tuple<string, int>("R Bhatia", 26907),
-                new Tuple<string, int>("P Kumar", 30732),
-                new Tuple<string, int>("Sandeep Sharma", 438362),
-                new Tuple<string, int>("Z Khan", 30102),
-                new Tuple<string, int>("A Mishra", 31107),
-                new Tuple<string, int>("R Dhawan", 290727),
-                new Tuple<string, int>("CJ Anderson", 277662),
-                new Tuple<string, int>("MM Patel", 32965),
-                new Tuple<string, int>("J Yadav", 447587),
-                new Tuple<string, int>("R Powell", 820351),
-                new Tuple<string, int>("Gurkeerat Singh", 537124),
-                new Tuple<string, int>("RK Singh", 723105),
-                new Tuple<string, int>("JP Duminy", 44932),
-                new Tuple<string, int>("PP Shaw", 1070168),
-                new Tuple<string, int>("Abhishek Sharma", 1070183),
-                new Tuple<string, int>("Y Prithvi Raj", 1121579),
-                new Tuple<string, int>("O Thomas", 914567),
-                new Tuple<string, int>("RP Singh", 35280),
-                new Tuple<string, int>("Mohammad Asif", 41411),
-                new Tuple<string, int>("Gagandeep Singh", 28758),
-                new Tuple<string, int>("S Vidyut", 35619),
-                new Tuple<string, int>("A Chopra", 27639),
-                new Tuple<string, int>("T Thushara", 49677),
-                new Tuple<string, int>("Kamran Khan", 391121),
-                new Tuple<string, int>("Harmeet Singh", 391128),
-                new Tuple<string, int>("R Bishnoi", 236766),
-                new Tuple<string, int>("Shoaib Ahmed", 317709),
-                new Tuple<string, int>("AN Ghosh", 220435),
-                new Tuple<string, int>("SS Sarkar", 34402),
-                new Tuple<string, int>("S Randiv", 50438),
-                new Tuple<string, int>("S Rana", 33757),
-                new Tuple<string, int>("Harmeet Singh (2)", 422847),
-                new Tuple<string, int>("Mohammad Nawaz (3)", 348148),
-                new Tuple<string, int>("BJ Watling", 38924),
-                new Tuple<string, int>("SC Williams", 55870),
-                new Tuple<string, int>("T Maruma", 235524),
-                new Tuple<string, int>("T Mupariwa", 55652),
-                new Tuple<string, int>("D Pretorius", 327830),
-                new Tuple<string, int>("N Pradeep", 324358),
-                new Tuple<string, int>("N Dickwella", 429754),
-                new Tuple<string, int>("Mehedi Hasan Miraz", 629063),
-                new Tuple<string, int>("Fahim Ashraf", 681117),
-                new Tuple<string, int>("Mohammad Shahzad", 419873), // wrong DOB
-                new Tuple<string, int>("Asghar Stanikzai", 320652),
-                new Tuple<string, int>("Samiullah Shenwari", 318339),
-                new Tuple<string, int>("GSNFG Jayasuriya", 422965),
-                new Tuple<string, int>("MDK Perera", 300631),
-                new Tuple<string, int>("LD Madushanka", 428366),
-                new Tuple<string, int>("Shaheen Shah Afridi", 1072470),
-                new Tuple<string, int>("I Udana", 328026),
-                new Tuple<string, int>("Hazratullah", 793457),
-                new Tuple<string, int>("Asif Ali", 494230),
-                new Tuple<string, int>("Ikram Alikhil", 935553),
-                new Tuple<string, int>("Aftab Alam", 440963),
-                new Tuple<string, int>("Mohammad Hasnain", 1158100),
-                new Tuple<string, int>("Abid Ali", 39950),
-                new Tuple<string, int>("L Sipamla", 698143),
-                new Tuple<string, int>("S Mahmood", 643885),
-                new Tuple<string, int>("S Samarawickrama", 629076),
-                new Tuple<string, int>("M Bhanuka", 629075),
-                new Tuple<string, int>("Nazmul Hossain Shanto", 629058),
-                new Tuple<string, int>("J Lewis", 16281),
-                new Tuple<string, int>("GJP Kruger", 45888),
-                new Tuple<string, int>("Martyn", 45888),
-                new Tuple<string, int>("Mohammad Sami", 41324),
-                new Tuple<string, int>("Aftab Ahmed", 56266),
-                new Tuple<string, int>("DR Brown", 9254),
-                new Tuple<string, int>("RM Haq", 25451),
-                new Tuple<string, int>("CJ Smith", 23691),
-                new Tuple<string, int>("Mohammad Kashif", 243073),
-                new Tuple<string, int>("S Dhaniram", 51738),
-                new Tuple<string, int>("TM Odoyo", 24705),
-                new Tuple<string, int>("LN Onyango", 24711),
-                new Tuple<string, int>("AO Suji", 24723),
-                new Tuple<string, int>("KO Otieno", 24714),
-                new Tuple<string, int>("JS Ababu", 24768),
+                //new Tuple<string, int>("A Singh", 26789),
             };
 
-            _substitutePlayerDictionary.Add("Martyn", 6513); // Damien martyn
-            _substitutePlayerDictionary.Add("Kapugedera", 209457); 
-            _substitutePlayerDictionary.Add("Astle", 36185);
+            _playerAliases.Add("Martyn", 6513); // Damien martyn
+            _playerAliases.Add("Kapugedera", 209457); 
+            _playerAliases.Add("Astle", 36185);
+            _playerAliases.Add("Fahim Ashraf", 681117);
+            _playerAliases.Add("P Young-Husband", 707183);
+            _playerAliases.Add("MDK Perera", 49920);
 
-            _unavailablePlayers.Add("Manjural Islam Rana",
-                new Player
-                {
-                    CricInfoId = 55991,
-                    CricsheetName = "Manjural Islam Rana",
-                    Name = "Manzarul Islam",
-                    FullName = "Qazi Manzarul Islam",
-                    DateOfBirth = new DateTime(1984, 05, 04),
-                    BattingStyle = "Left-hand bat",
-                    BowlingStyle = "Slow left-arm orthodox",
-                    PlayingRole = ALLROUNDER,
-                    IsActive = true,
-                });
+            //_unavailablePlayers.Add("MDK Perera",
+            //   new Player
+            //   {
+            //       CricInfoId = 49920,
+            //       CricsheetName = "MDK Perera",
+            //       Name = "Dilruwan Perera",
+            //       FullName = "Mahawaduge Dilruwan Kamalaneth Perera",
+            //       DateOfBirth = new DateTime(1982, 07, 22),
+            //       BattingStyle = "Right-hand bat",
+            //       BowlingStyle = "Right-arm offbreak",
+            //       PlayingRole = ALLROUNDER,
+            //       IsActive = true,
+            //   });       
 
-            _unavailablePlayers.Add("RS Morton",
-                new Player
-                {
-                    CricInfoId = 52445,
-                    CricsheetName = "RS Morton",
-                    Name = "Runako Morton",
-                    FullName = "Runako Shakur Morton",
-                    DateOfBirth = new DateTime(1978, 07, 22),
-                    BattingStyle = "Right-hand bat",
-                    BowlingStyle = "Right-arm medium",
-                    PlayingRole = BATSMAN,
-                    IsActive = true,
-                });
 
-            _unavailablePlayers.Add("AG Harriott",
-                new Player
-                {
-                    FullName = "Andrew G Harriott",
-                    Name = "Andrew Harriott",
-                    BattingStyle = "Right-hand bat",
-                    DateOfBirth = null,
-                    CricInfoId = 437446,
-                    CricsheetName = "AG Harriott",
-                    IsActive = true,
-                    PlayingRole = BATSMAN
-                });
 
-            _unavailablePlayers.Add("W Madhevere",
-                new Player
-                {
-                    CricInfoId = 938959,
-                    CricsheetName = "W Madhevere",
-                    Name = "Wesley Madhevere",
-                    FullName = "Wesley Nyasha Madhevere",
-                    DateOfBirth = new DateTime(2000, 09, 04),
-                    BattingStyle = "Right-hand bat",
-                    BowlingStyle = "Right-arm offbreak",
-                    PlayingRole = ALLROUNDER,
-                    IsActive = true,
-                });
-
-            _unavailablePlayers.Add("R Shepherd",
-                new Player
-                {
-                    CricInfoId = 677077,
-                    CricsheetName = "R Shepherd",
-                    Name = "Romario Shepherd",
-                    FullName = "Romario Shepherd",
-                    DateOfBirth = new DateTime(1994, 11, 26),
-                    BattingStyle = "Right-hand bat",
-                    BowlingStyle = "Right-arm medium-fast",
-                    PlayingRole = BOWLER,
-                    IsActive = true,
-                });
-
-            _unavailablePlayers.Add("H Kerr",
-                new Player
-                {
-                    CricInfoId = 1163855,
-                    CricsheetName = "H Kerr",
-                    Name = "Hayden Kerr",
-                    FullName = "Hayden Kerr",
-                    DateOfBirth = new DateTime(1996, 07, 10),
-                    BattingStyle = "Right-hand bat",
-                    BowlingStyle = "Left-arm fast-medium",
-                    PlayingRole = ALLROUNDER,
-                    IsActive = true,
-                });
-
-            _unavailablePlayers.Add("NT Ellis",
-                new Player
-                {
-                    CricInfoId = 826915,
-                    CricsheetName = "NT Ellis",
-                    Name = "Nathan Ellis",
-                    FullName = "Nathan Ellis",
-                    DateOfBirth = new DateTime(1994, 09, 22),
-                    BattingStyle = "Right-hand bat",
-                    BowlingStyle = "Right-arm medium",
-                    PlayingRole = ALLROUNDER,
-                    IsActive = true,
-                });
-
-            _unavailablePlayers.Add("LR Morris",
-                new Player
-                {
-                    CricInfoId = 1125317,
-                    CricsheetName = "LR Morris",
-                    Name = "Lance Morris",
-                    FullName = "Lance R Morris",
-                    DateOfBirth = new DateTime(1998, 03, 28),
-                    BattingStyle = "Right-hand bat",
-                    BowlingStyle = "Right-arm medium",
-                    PlayingRole = BOWLER,
-                    IsActive = true,
-                });
-
-            _unavailablePlayers.Add("J Morgan",
-                new Player
-                {
-                    CricInfoId = 605573,
-                    CricsheetName = "J Morgan",
-                    Name = "Jaron Morgan",
-                    FullName = "Jaron Morgan",
-                    DateOfBirth = new DateTime(1995, 09, 27),
-                    BattingStyle = "Left-hand bat",
-                    BowlingStyle = "Legbreak",
-                    PlayingRole = BATSMAN,
-                    IsActive = true,
-                });
-
-            _unavailablePlayers.Add("NA McSweeney",
-                new Player
-                {
-                    CricInfoId = 1124290,
-                    CricsheetName = "NA McSweeney",
-                    Name = "Nathan McSweeney",
-                    FullName = "Nathan A McSweeney",
-                    DateOfBirth = new DateTime(1999, 03, 08),
-                    BattingStyle = "Right-hand bat",
-                    BowlingStyle = "Right-arm offbreak",
-                    PlayingRole = BOWLER,
-                    IsActive = true,
-                });
-
-            _unavailablePlayers.Add("Dilbar Hussain",
-                new Player
-                {
-                    CricInfoId = 1206623,
-                    CricsheetName = "Dilbar Hussain",
-                    Name = "Dilbar Hussain",
-                    FullName = "Dilbar Hussain",
-                    DateOfBirth = new DateTime(1993, 02, 20),
-                    BattingStyle = "Right-hand bat",
-                    BowlingStyle = "Right-arm fast-medium",
-                    PlayingRole = BOWLER,
-                    IsActive = true,
-                });
-
-            _unavailablePlayers.Add("Z Evans",
-                new Player
-                {
-                    CricInfoId = 1088612,
-                    CricsheetName = "Z Evans",
-                    Name = "Zak Evans",
-                    FullName = "Zak Evans",
-                    DateOfBirth = new DateTime(2000, 03, 26),
-                    BattingStyle = "Right-hand bat",
-                    BowlingStyle = "Right-arm medium-fast",
-                    PlayingRole = BOWLER,
-                    IsActive = true,
-                });
-
-            _unavailablePlayers.Add("PJ Hughes",
-                new Player
-                {
-                    CricInfoId = 272364,
-                    CricsheetName = "PJ Hughes",
-                    Name = "Phillip Hughes",
-                    FullName = "Phillip Joel Hughes",
-                    DateOfBirth = new DateTime(1988, 11, 30),
-                    BattingStyle = "Left-hand bat",
-                    BowlingStyle = null,
-                    PlayingRole = BATSMAN,
-                    IsActive = true,
-                });
-
-            _unavailablePlayers.Add("RR Ayre",
-                new Player
-                {
-                    CricInfoId = 638911,
-                    CricsheetName = "RR Ayre",
-                    Name = "Riley Ayre",
-                    FullName = "Riley R Ayre",
-                    DateOfBirth = new DateTime(1996, 04, 02),
-                    BattingStyle = "Right-hand bat",
-                    BowlingStyle = "Slow left-arm orthodox",
-                    PlayingRole = BOWLER,
-                    IsActive = true,
-                });
-
-            _unavailablePlayers.Add("A Dananjaya",
-               new Player
-               {
-                   CricInfoId = 574178,
-                   CricsheetName = "A Dananjaya",
-                   Name = "Akila Dananjaya",
-                   FullName = "Mahamarakkala Kurukulasooriya Patabendige Akila Dananjaya Perera",
-                   DateOfBirth = new DateTime(1993, 10, 04),
-                   BattingStyle = "Left-hand bat",
-                   BowlingStyle = "Right-arm offbreak",
-                   PlayingRole = ALLROUNDER,
-                   IsActive = true,
-               });
-
-            _unavailablePlayers.Add("CV Varun",
-                          new Player
-                          {
-                              CricInfoId = 1108375,
-                              CricsheetName = "CV Varun",
-                              Name = "Varun Chakravarthy",
-                              FullName = "Varun Chakravarthy Vinod",
-                              DateOfBirth = new DateTime(1991, 08, 29),
-                              BattingStyle = "Right-hand bat",
-                              BowlingStyle = "Legbreak googly",
-                              PlayingRole = BOWLER,
-                              IsActive = true,
-                          });
-
-            _unavailablePlayers.Add("Arshdeep Singh",
-                           new Player
-                           {
-                               CricInfoId = 1125976,
-                               CricsheetName = "Arshdeep Singh",
-                               Name = "Arshdeep Singh",
-                               FullName = "Arshdeep Singh",
-                               DateOfBirth = new DateTime(1999, 02, 05),
-                               BattingStyle = "Left-hand bat",
-                               BowlingStyle = "Left-arm medium-fast",
-                               PlayingRole = BOWLER,
-                               IsActive = true,
-                           });
-
-            _unavailablePlayers.Add("Harpreet Brar",
-                           new Player
-                           {
-                               CricInfoId = 1168641,
-                               CricsheetName = "Harpreet Brar",
-                               Name = "Harpreet Brar",
-                               FullName = "Harpreet Brar",
-                               DateOfBirth = new DateTime(1995, 09, 16),
-                               BattingStyle = "Left-hand bat",
-                               BowlingStyle = "Slow left-arm orthodox",
-                               PlayingRole = BOWLER,
-                               IsActive = true,
-                           });
-
-            _unavailablePlayers.Add("AS Roy",
-                           new Player
-                           {
-                               CricInfoId = 1079839,
-                               CricsheetName = "AS Roy",
-                               Name = "Anukul Roy",
-                               FullName = "Anukul Sudhakar Roy",
-                               DateOfBirth = new DateTime(1998, 01, 30),
-                               BattingStyle = "Left-hand bat",
-                               BowlingStyle = "Slow left-arm orthodox",
-                               PlayingRole = ALLROUNDER,
-                               IsActive = true,
-                           });
-
-            foreach(var plr in _preloadedPlayers)
+            foreach (var plr in _preloadedPlayers)
             {
                 var player = _playerContext.Players.First(p => p.CricInfoId == plr.Item2);
 
@@ -578,16 +234,133 @@ namespace PlayerDataGenerator
             File.WriteAllText("Teams.txt", teamsBuilder.ToString());
             Console.WriteLine("Extraction Complete");
 
-            if(_failedPlayers.Count > 0)
+            if (_failedPlayers.Count > 0)
                 throw new Exception($"there are {count} unmapped players. Please Map them.");
+            else
+                GeneratePlayerDataScript();
             Console.ReadKey();
+        }
+
+        private void GeneratePlayerDataScript()
+        {
+            var players = _playerContext.Players.ToList();
+
+            var stringBuilder = new StringBuilder();
+
+            stringBuilder.AppendLine("IF OBJECT_ID('tempdb..#players') IS NOT NULL");
+            stringBuilder.AppendLine("  DROP TABLE #players");
+            stringBuilder.AppendLine();
+            stringBuilder.AppendLine("CREATE TABLE #players");
+            stringBuilder.AppendLine("(");
+            stringBuilder.AppendLine("  [Id]            INT             IDENTITY(1, 1) NOT NULL,");
+            stringBuilder.AppendLine("  [Name]          NVARCHAR(MAX)   NULL,");
+            stringBuilder.AppendLine("  [FullName]      NVARCHAR(MAX)   NULL,");
+            stringBuilder.AppendLine("  [PlayingRole]   NVARCHAR(MAX)   NULL,");
+            stringBuilder.AppendLine("  [DateOfBirth]   DATETIME        NULL,");
+            stringBuilder.AppendLine("  [BattingStyle]  NVARCHAR(MAX)   NULL,");
+            stringBuilder.AppendLine("  [BowlingStyle]  NVARCHAR(MAX)   NULL,");
+            stringBuilder.AppendLine("  [CricInfoId]    INT             NOT NULL,");
+            stringBuilder.AppendLine("  [IsActive]      BIT             DEFAULT((1)),");
+            stringBuilder.AppendLine("  [CricsheetName] NVARCHAR(MAX)   NULL,");
+            stringBuilder.AppendLine(");");
+            stringBuilder.AppendLine();
+            stringBuilder.AppendLine(
+                "INSERT INTO #players	([Name], [FullName], [PlayingRole], [DateOfBirth], [BattingStyle], [BowlingStyle], [CricInfoId], [IsActive], [CricsheetName])");
+
+            var lastPlayerIndex = players.Count() - 1;
+
+            for (var index = 0; index < players.Count(); index++)
+            {
+                var player = players[index];
+
+                var canSplitBatch = index % 1000 == 0;
+                var cricSheetName = player.CricsheetName== null ? "NULL" : $"'{player.CricsheetName.Replace("'", "''")}'";
+                var dateOfBirth = player.DateOfBirth== null ? "NULL" : $"'{player.DateOfBirth}'";
+                if (canSplitBatch)
+                {
+                    
+                    stringBuilder.AppendLine(
+                        $@"SELECT '{player.Name.Replace("'", "''")}' AS Name, '{player.FullName.Replace("'", "''")}' AS FullName, '{player.PlayingRole}' AS PlayingRole, {dateOfBirth} AS DateofBirth," +
+                        $@" '{player.BattingStyle}' AS BattingStyle, '{player.BowlingStyle}' AS BowlingStyle, '{player.CricInfoId}' AS CricInfoId, 1 AS IsActive, {cricSheetName} AS CricsheetName");
+                    
+                    stringBuilder.AppendLine("Go");
+
+                    stringBuilder.AppendLine();
+
+                    stringBuilder.AppendLine(
+                        "INSERT INTO #players	([Name], [FullName], [PlayingRole], [DateOfBirth], [BattingStyle], [BowlingStyle], [CricInfoId], [IsActive], [CricsheetName])");
+                }
+                else if (index == lastPlayerIndex)
+                {
+                    
+                    stringBuilder.AppendLine(
+                        $@"SELECT '{player.Name.Replace("'", "''")}' AS Name, '{player.FullName.Replace("'", "''")}' AS FullName, '{player.PlayingRole}' AS PlayingRole, {dateOfBirth} AS DateofBirth," +
+                        $@" '{player.BattingStyle}' AS BattingStyle, '{player.BowlingStyle}' AS BowlingStyle, '{player.CricInfoId}' AS CricInfoId, 1 AS IsActive, {cricSheetName} AS CricsheetName");
+                    
+                }
+                else
+                {                    
+                    stringBuilder.AppendLine(
+                        $@"SELECT '{player.Name.Replace("'", "''")}' AS Name, '{player.FullName.Replace("'", "''")}' AS FullName, '{player.PlayingRole}' AS PlayingRole, {dateOfBirth}  AS DateofBirth," +
+                        $@" '{player.BattingStyle}' AS BattingStyle, '{player.BowlingStyle}' AS BowlingStyle, '{player.CricInfoId}' AS CricInfoId, 1 AS IsActive, {cricSheetName} AS CricsheetName UNION ALL");                    
+                }
+            }
+
+            stringBuilder.AppendLine("");
+            stringBuilder.AppendLine("BEGIN TRY");
+            stringBuilder.AppendLine("");
+            stringBuilder.AppendLine("  BEGIN TRANSACTION");
+            stringBuilder.AppendLine("");
+            stringBuilder.AppendLine("      MERGE  dbo.players AS TARGET");
+            stringBuilder.AppendLine("          USING #players AS SOURCE");
+            stringBuilder.AppendLine("          ON(TARGET.CricInfoId = SOURCE.CricInfoId)");
+            stringBuilder.AppendLine("              WHEN MATCHED AND TARGET.PlayingRole <> SOURCE.PlayingRole");
+            stringBuilder.AppendLine("              THEN");
+            stringBuilder.AppendLine("                  UPDATE");
+            stringBuilder.AppendLine("                  SET TARGET.PlayingRole = SOURCE.PlayingRole");
+            stringBuilder.AppendLine("              WHEN NOT MATCHED BY TARGET");
+            stringBuilder.AppendLine("              THEN");
+            stringBuilder.AppendLine("                  INSERT(Name");
+            stringBuilder.AppendLine("                        , FullName");
+            stringBuilder.AppendLine("                        , PlayingRole");
+            stringBuilder.AppendLine("                        , DateOfBirth");
+            stringBuilder.AppendLine("                        , BattingStyle");
+            stringBuilder.AppendLine("                        , BowlingStyle");
+            stringBuilder.AppendLine("                        , CricInfoId");
+            stringBuilder.AppendLine("                        , IsActive");
+            stringBuilder.AppendLine("                        , CricsheetName)");
+            stringBuilder.AppendLine("                  VALUES(SOURCE.Name");
+            stringBuilder.AppendLine("                        , SOURCE.FullName");
+            stringBuilder.AppendLine("                        , SOURCE.PlayingRole");
+            stringBuilder.AppendLine("                        , SOURCE.DateOfBirth");
+            stringBuilder.AppendLine("                        , SOURCE.BattingStyle");
+            stringBuilder.AppendLine("                        , SOURCE.BowlingStyle");
+            stringBuilder.AppendLine("                        , SOURCE.CricInfoId");
+            stringBuilder.AppendLine("                        , SOURCE.IsActive");
+            stringBuilder.AppendLine("                        , SOURCE.CricsheetName);");
+            stringBuilder.AppendLine("");
+            stringBuilder.AppendLine("");
+            stringBuilder.AppendLine("  COMMIT TRANSACTION");
+            stringBuilder.AppendLine("PRINT 'MERGE dbo.Player - Done'");
+            stringBuilder.AppendLine("END TRY");
+            stringBuilder.AppendLine("BEGIN CATCH");
+            stringBuilder.AppendLine("      ROLLBACK TRANSACTION;");
+            stringBuilder.AppendLine("      THROW");
+            stringBuilder.AppendLine("END CATCH");
+
+            File.WriteAllText("PlayersData.sql", stringBuilder.ToString());
+
+            Console.WriteLine("Player Data script is generated.");
         }
 
         private void UpdatePlayer(string player)
         {
             player = player.Replace(" (sub)", "");
+            Player p = _playerContext.Players.SingleOrDefault(p => p.CricsheetName.Equals(player));
 
-            if(_players.ContainsKey(player) || _failedPlayers.ContainsKey(player) || _substitutePlayerDictionary.ContainsKey(player)) return;
+            if (p != null) return;
+
+            if(_players.ContainsKey(player) || _failedPlayers.ContainsKey(player) || _playerAliases.ContainsKey(player)) return;
 
             List<Player> foundPlayers = new List<Player>();
 
