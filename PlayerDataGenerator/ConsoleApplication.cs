@@ -2,16 +2,16 @@
 {
     internal class ConsoleApplication
     {
-        private readonly IPlayerExtractor _playerExtractor;
+        private readonly ICricketDataIngestor _cricketDataIngestor;
 
-        public ConsoleApplication(IPlayerExtractor playerExtractor)
+        public ConsoleApplication(ICricketDataIngestor cricketDataIngestor)
         {
-            _playerExtractor = playerExtractor;
+            _cricketDataIngestor = cricketDataIngestor;
         }
 
         public void Run()
         {
-            _playerExtractor.Start();
+            _cricketDataIngestor.ExtractPlayers();
         }
     }
 }

@@ -7,9 +7,9 @@ namespace ElasticRepository.Indices
     {
         private readonly ElasticClient _elasticClient;
 
-        public IndexCreator()
+        public IndexCreator(string uri)
         {
-            _elasticClient = new ElasticClientProvider().GetElasticClient();
+            _elasticClient = new ElasticClientProvider().GetElasticClient(uri);
         }
 
         public CreateIndexResponse CreateIplIndex()

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.IO;
-using System.Net.Mime;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+
 using PlayerDataGenerator.Data;
 
 namespace PlayerDataGenerator
@@ -37,11 +37,12 @@ namespace PlayerDataGenerator
 
         private static void ConfigureServices(IServiceCollection services)
         {
-            var generalSettings = _configuration.GetSection("GeneralSettings").Get<GeneralSettings>();
-            _configuration.Bind("GeneralSettings", generalSettings);
-            var connectionString = _configuration.GetConnectionString("PlayerContext");
-            services.AddDbContext<PlayerContext>(options => options.UseSqlServer(connectionString));
-            services.AddScoped<IPlayerExtractor, PlayerExtractor>();
+            var generalSettings = _configuration.GetSection(Constants.GENERAL_SETTINGS).Get<GeneralSettings>();
+            _configuration.Bind(Constants.GENERAL_SETTINGS, generalSettings);
+            var connectionString = _configuration.GetConnectionString(Constants.DBConnections.CRICKET_DB);
+            services.AddDbContext<CricketContext>(options => options.UseSqlServer(connectionString));
+            services.AddScoped<ICricketDataIngestor, CricketDataIngestor>();
+            services.AddScoped<IPlayerScriptGenerator, PlayerScriptGenerator>();
             services.AddSingleton(generalSettings);
             services.AddScoped<ConsoleApplication>();
         }
