@@ -24,7 +24,7 @@ namespace PlayerDataGenerator
         }
         public void GenerateScript()
         {
-            var players = _playerContext.Players.ToList();
+            var players = _playerContext.Players.OrderBy(p=>p.CricInfoId).ToList();
 
             var stringBuilder = new StringBuilder();
 

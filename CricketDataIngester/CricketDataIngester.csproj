@@ -172,12 +172,6 @@
       <DependentUpon>Player.mdf</DependentUpon>
     </Content>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\ElasticRepo\ElasticRepo.csproj">
-      <Project>{9EA116A1-686E-45F3-B926-843FE447FEF6}</Project>
-      <Name>ElasticRepo</Name>
-    </ProjectReference>
-  </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

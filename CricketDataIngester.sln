@@ -3,10 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.28803.452
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CricketDataIngester", "CricketDataIngester\CricketDataIngester.csproj", "{296551E8-7972-4910-974A-D1B063595F93}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ElasticRepo", "ElasticRepo\ElasticRepo.csproj", "{9EA116A1-686E-45F3-B926-843FE447FEF6}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ElasticRepository", "ElasticRepository\ElasticRepository.csproj", "{C3947EBD-7728-4787-8AF2-DFB879ECF913}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PlayerDataGenerator", "PlayerDataGenerator\PlayerDataGenerator.csproj", "{DF088A52-78F5-4EA2-993A-7E03752F20ED}"
@@ -17,14 +13,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{296551E8-7972-4910-974A-D1B063595F93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{296551E8-7972-4910-974A-D1B063595F93}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{296551E8-7972-4910-974A-D1B063595F93}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{296551E8-7972-4910-974A-D1B063595F93}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9EA116A1-686E-45F3-B926-843FE447FEF6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9EA116A1-686E-45F3-B926-843FE447FEF6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9EA116A1-686E-45F3-B926-843FE447FEF6}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9EA116A1-686E-45F3-B926-843FE447FEF6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{C3947EBD-7728-4787-8AF2-DFB879ECF913}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C3947EBD-7728-4787-8AF2-DFB879ECF913}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C3947EBD-7728-4787-8AF2-DFB879ECF913}.Release|Any CPU.ActiveCfg = Release|Any CPU
