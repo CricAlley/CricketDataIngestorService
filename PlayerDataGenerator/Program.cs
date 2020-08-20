@@ -5,6 +5,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
 using PlayerDataGenerator.Data;
+using AutoMapper;
+using System.Reflection;
 
 namespace PlayerDataGenerator
 {
@@ -45,6 +47,7 @@ namespace PlayerDataGenerator
             services.AddScoped<IPlayerScriptGenerator, PlayerScriptGenerator>();
             services.AddSingleton(generalSettings);
             services.AddScoped<ConsoleApplication>();
+            services.AddAutoMapper(new[] { Assembly.GetExecutingAssembly() });
         }
 
         private static void DisposeServices()

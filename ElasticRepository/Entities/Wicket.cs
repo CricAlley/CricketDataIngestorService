@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace ElasticRepository.Entities
 {
@@ -12,55 +13,55 @@ namespace ElasticRepository.Entities
 
         public int CaughtCount
         {
-            get => Kind.ToLower() == "caught" ? 1 : 0;
+            get => Kind.Equals("caught", StringComparison.InvariantCultureIgnoreCase) ? 1 : 0;
             set { }
         }
 
         public int BowledCount
         {
-            get => Kind.ToLower() == "bowled" ? 1 : 0;
+            get => Kind.Equals("bowled", StringComparison.InvariantCultureIgnoreCase) ? 1 : 0;
             set { }
         }
 
         public int RunOutCount
         {
-            get => Kind.ToLower() == "run out" ? 1 : 0;
+            get => Kind.Equals("run out", StringComparison.InvariantCultureIgnoreCase) ? 1 : 0;
             set { }
         }
 
         public int LBWCount
         {
-            get => Kind.ToLower() == "lbw" ? 1 : 0;
+            get => Kind.Equals("lbw", StringComparison.InvariantCultureIgnoreCase) ? 1 : 0;
             set { }
         }
 
         public int StumpedCount
         {
-            get => Kind.ToLower() == "stumped" ? 1 : 0;
+            get => Kind.Equals("stumped", StringComparison.InvariantCultureIgnoreCase) ? 1 : 0;
             set { }
         }
 
         public int CaughtAndBowledCount
         {
-            get => Kind.ToLower() == "caught and bowled" ? 1 : 0;
+            get => Kind.Equals("caught and bowled", StringComparison.InvariantCultureIgnoreCase) ? 1 : 0;
             set { }
         }
 
         public int RetiredHurtCount
         {
-            get => Kind.ToLower() == "retired hurt" ? 1 : 0;
+            get => Kind.Equals("retired hurt", StringComparison.InvariantCultureIgnoreCase) ? 1 : 0;
             set { }
         }
 
         public int HitWicketCount
         {
-            get => Kind.ToLower() == "hit wicket" ? 1 : 0;
+            get => Kind.Equals("hit wicket", StringComparison.InvariantCultureIgnoreCase) ? 1 : 0;
             set { }
         }
 
         public int ObstructingTheFieldCount
         {
-            get => Kind.ToLower() == "obstructing the field" ? 1 : 0;
+            get => Kind.Equals("obstructing the field", StringComparison.InvariantCultureIgnoreCase) ? 1 : 0;
             set { }
         }
     }

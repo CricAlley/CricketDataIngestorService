@@ -206,7 +206,7 @@ namespace CricketDataIngester
             player = player.Replace(" (sub)", "");
             if (_players.ContainsKey(player)) return;
 
-            if (_ambigousPlayers.Any(p => p.Item1 == player)) return;
+            if (_ambigousPlayers.Any(p => p.Item1.Equals(player, StringComparison.InvariantCultureIgnoreCase))) return;
 
             Player foundPlayer = null;
 
@@ -235,7 +235,7 @@ namespace CricketDataIngester
                         var isDbNameInitials = dbFirstName.ToCharArray().All(c => c == char.ToUpper(c));
 
                         var isfound = false;
-                        if (dbLastName.ToUpper() == lastName.ToUpper())
+                        if (dbLastName.Equals(lastName, StringComparison.InvariantCultureIgnoreCase))
                         {
                             isfound = true;
                             var j = 0;
@@ -249,7 +249,7 @@ namespace CricketDataIngester
                             if (!string.IsNullOrWhiteSpace(middleName) && dbNames[j].ToUpper() != middleName.ToUpper())
                                 isfound = false;
 
-                            if (isDbNameInitials) isfound = dbFirstName == firstName;
+                            if (isDbNameInitials) isfound = dbFirstName.Equals(firstName, StringComparison.InvariantCultureIgnoreCase);
                         }
 
                         if (isfound)
@@ -276,9 +276,10 @@ namespace CricketDataIngester
                         var dbMiddleName = string.Empty;
                         if (dbNames.Length > 2) dbMiddleName = dbNames.Skip(1).FirstOrDefault();
 
-                        if (firstName.ToUpper() == dbFirstName.ToUpper() &&
-                            lastName.ToUpper() == dbLastName.ToUpper() &&
-                            middleName?.ToUpper() == dbMiddleName?.ToUpper())
+                        if (firstName.Equals( dbFirstName, StringComparison.InvariantCultureIgnoreCase) &&
+                            lastName.Equals(dbLastName, StringComparison.InvariantCultureIgnoreCase) &&
+                            ((middleName == null && dbMiddleName == null) ||
+                            middleName.Equals(dbMiddleName, StringComparison.InvariantCultureIgnoreCase)))
                         {
                             _players.Add(player, dbPlayer);
                             foundPlayer = dbPlayer;

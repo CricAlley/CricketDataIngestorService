@@ -11,5 +11,6 @@ namespace ElasticRepository.Entities
         public string BowlingStyle { get; set; }
         public int CricInfoId { get; set; }
         public string CricsheetName { get; set; }
+        public string Team { get; set; }
     }
 }
