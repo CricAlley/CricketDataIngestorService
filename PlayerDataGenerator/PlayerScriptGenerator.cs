@@ -95,10 +95,17 @@ namespace PlayerDataGenerator
             stringBuilder.AppendLine("      MERGE  dbo.players AS TARGET");
             stringBuilder.AppendLine("          USING #players AS SOURCE");
             stringBuilder.AppendLine("          ON(TARGET.CricInfoId = SOURCE.CricInfoId)");
-            stringBuilder.AppendLine("              WHEN MATCHED AND TARGET.PlayingRole <> SOURCE.PlayingRole");
+            stringBuilder.AppendLine("              WHEN MATCHED");
             stringBuilder.AppendLine("              THEN");
             stringBuilder.AppendLine("                  UPDATE");
             stringBuilder.AppendLine("                  SET TARGET.PlayingRole = SOURCE.PlayingRole");
+            stringBuilder.AppendLine("                      , TARGET.CricSheetName = SOURCE.CricSheetName");
+            stringBuilder.AppendLine("                      , TARGET.FullName = SOURCE.FullName");
+            stringBuilder.AppendLine("                      , TARGET.DateOfBirth = SOURCE.DateOfBirth");
+            stringBuilder.AppendLine("                      , TARGET.BattingStyle = SOURCE.BattingStyle");
+            stringBuilder.AppendLine("                      , TARGET.BowlingStyle = SOURCE.BowlingStyle");
+            stringBuilder.AppendLine("                      , TARGET.CricInfoId = SOURCE.CricInfoId");
+            stringBuilder.AppendLine("                      , TARGET.IsActive = SOURCE.IsActive");
             stringBuilder.AppendLine("              WHEN NOT MATCHED BY TARGET");
             stringBuilder.AppendLine("              THEN");
             stringBuilder.AppendLine("                  INSERT(Name");

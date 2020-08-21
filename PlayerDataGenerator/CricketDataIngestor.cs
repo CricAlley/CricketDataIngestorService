@@ -359,6 +359,8 @@ namespace PlayerDataGenerator
                                                                 .IndexMany(balls));
                 }
             }
+
+            Console.WriteLine("Elastic Ingestion complete");
         }
 
         private Player GetPlayer(string playerName)
