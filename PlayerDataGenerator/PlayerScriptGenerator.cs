@@ -57,7 +57,7 @@ namespace PlayerDataGenerator
 
                 var canSplitBatch = index % 1000 == 0;
                 var cricSheetName = player.CricsheetName == null ? "NULL" : $"'{player.CricsheetName.Replace("'", "''")}'";
-                var dateOfBirth = player.DateOfBirth == null ? "NULL" : $"'{player.DateOfBirth.Value.ToString("dd-MM-yyyy", System.Globalization.CultureInfo.InvariantCulture)}'";
+                var dateOfBirth = player.DateOfBirth == null ? "NULL" : $"'{player.DateOfBirth.Value.ToString("MM/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture)}'";
                 if (canSplitBatch)
                 {
 
