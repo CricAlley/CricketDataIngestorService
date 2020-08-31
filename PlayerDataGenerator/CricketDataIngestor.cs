@@ -51,7 +51,8 @@ namespace PlayerDataGenerator
             //ipl_male
             //ntb_male
             //odis_male
-            //t20s_male  
+            //t20s_male
+            // cpl_male
         }
 
         public void ExtractPlayers()

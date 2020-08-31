@@ -57,7 +57,7 @@ namespace PlayerDataGenerator
 
                 var canSplitBatch = index % 1000 == 0;
                 var cricSheetName = player.CricsheetName == null ? "NULL" : $"'{player.CricsheetName.Replace("'", "''")}'";
-                var dateOfBirth = player.DateOfBirth == null ? "NULL" : $"'{player.DateOfBirth}'";
+                var dateOfBirth = player.DateOfBirth == null ? "NULL" : $"'{player.DateOfBirth.Value.ToString("dd-MM-yyyy", System.Globalization.CultureInfo.InvariantCulture)}'";
                 if (canSplitBatch)
                 {
 
@@ -83,7 +83,7 @@ namespace PlayerDataGenerator
                 else
                 {
                     stringBuilder.AppendLine(
-                        $@"SELECT '{player.Name.Replace("'", "''")}' AS Name, '{player.FullName.Replace("'", "''")}' AS FullName, '{player.PlayingRole}' AS PlayingRole, {dateOfBirth}  AS DateofBirth," +
+                        $@"SELECT '{player.Name.Replace("'", "''")}' AS Name, '{player.FullName.Replace("'", "''")}' AS FullName, '{player.PlayingRole}' AS PlayingRole, {dateOfBirth} AS DateofBirth," +
                         $@" '{player.BattingStyle}' AS BattingStyle, '{player.BowlingStyle}' AS BowlingStyle, {player.CricInfoId} AS CricInfoId, 1 AS IsActive, {cricSheetName} AS CricsheetName UNION ALL");
                 }
             }
