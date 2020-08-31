@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.ConstrainedExecution;
 using System.Text;
 
 using AutoMapper;
 
 using ElasticRepository;
-
-using Nest;
 
 using PlayerDataGenerator.Data;
 using PlayerDataGenerator.YamlParser;
@@ -121,7 +118,7 @@ namespace PlayerDataGenerator
                             }
 
                             stringBuilder.AppendLine(
-                                $"exception: {e.Message}, Player Name: {player} + yaml- {file.Name}, matchDate - {match.MatchInfo.Dates.First().ToShortDateString()}, matchTeams - {string.Join("-", match.MatchInfo.Teams)} ");
+                                $"exception: {e.Message}, Player Name: {player} + yaml- {file.Name}, search text - {match.MatchInfo.Dates.First().ToString("dd MM YYYY", System.Globalization.CultureInfo.InvariantCulture)} {string.Join(" vs ", match.MatchInfo.Teams)} ");
                         }
 
                     }
@@ -130,8 +127,10 @@ namespace PlayerDataGenerator
 
             stringBuilder.Append($"Unable to Map {count} Players ");
 
-            File.WriteAllText("PlayersData.txt", stringBuilder.ToString());
-            File.WriteAllText("Teams.txt", teamsBuilder.ToString());
+            var failedPlayerpath = $"{_generalSettings.OutputFolderPath}\\{Constants.FailedPlayerFile}";
+            var includedTeamsFilePath = $"{_generalSettings.OutputFolderPath}\\{Constants.IncludedTeams}";
+            WriteToFile(failedPlayerpath, stringBuilder.ToString());
+            WriteToFile(includedTeamsFilePath, teamsBuilder.ToString());           
             Console.WriteLine("Extraction Complete");
 
             if (_failedPlayers.Count > 0)
@@ -144,14 +143,22 @@ namespace PlayerDataGenerator
             }
         }
 
+        private static void WriteToFile(string failedPlayerpath, string content)
+        {
+            FileInfo file = new FileInfo(failedPlayerpath);
+            file.Directory.Create(); // If the directory already exists, this method does nothing.
+            File.WriteAllText(file.FullName, content);
+        }
+
         private void UpdatePlayer(string player)
         {
             player = player.Replace(" (sub)", "");
+
+            if (_players.ContainsKey(player) || _failedPlayers.ContainsKey(player) || _playerAliases.Any(pa => pa.CricsheetName.Equals(player, StringComparison.InvariantCultureIgnoreCase))) return;
+            
             Player p = _dbPlayers.SingleOrDefault(p => p.CricsheetName != null && p.CricsheetName.Equals(player));
 
-            if (p != null) return;
-
-            if (_players.ContainsKey(player) || _failedPlayers.ContainsKey(player) || _playerAliases.Any(pa => pa.CricsheetName.Equals( player, StringComparison.InvariantCultureIgnoreCase))) return;
+            if (p != null) return;            
 
             List<Player> foundPlayers = new List<Player>();
 
@@ -381,11 +388,9 @@ namespace PlayerDataGenerator
             }
             catch(Exception e)
             {
-                Console.WriteLine($"PlayerName failed : {playerName}");
+                Console.WriteLine($"PlayerName failed : {playerName}. Exception: {e.Message}");
                 throw;
             }
-
-            return null;
         }
 
         private static string GetMatchId(MatchInfo matchInfo, FileInfo file)

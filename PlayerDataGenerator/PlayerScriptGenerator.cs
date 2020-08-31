@@ -1,7 +1,6 @@
 ﻿using PlayerDataGenerator.Data;
 
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -17,10 +16,12 @@ namespace PlayerDataGenerator
     public class PlayerScriptGenerator : IPlayerScriptGenerator
     {
         private readonly CricketContext _playerContext;
+        private readonly GeneralSettings _generalSettings;
 
-        public PlayerScriptGenerator(CricketContext playerContext)
+        public PlayerScriptGenerator(CricketContext playerContext, GeneralSettings generalSettings)
         {
             _playerContext = playerContext;
+            _generalSettings = generalSettings;
         }
         public void GenerateScript()
         {
@@ -136,9 +137,16 @@ namespace PlayerDataGenerator
             stringBuilder.AppendLine("      THROW");
             stringBuilder.AppendLine("END CATCH");
 
-            File.WriteAllText("PlayersData.sql", stringBuilder.ToString());
+            WriteToFile($"{_generalSettings.OutputFolderPath}\\{Constants.PlayerScript}", stringBuilder.ToString());
 
             Console.WriteLine("Player Data script is generated.");
+        }
+
+        private static void WriteToFile(string failedPlayerpath, string content)
+        {
+            FileInfo file = new FileInfo(failedPlayerpath);
+            file.Directory.Create(); // If the directory already exists, this method does nothing.
+            File.WriteAllText(file.FullName, content);
         }
     }
 }

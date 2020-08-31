@@ -3,6 +3,7 @@
     public class GeneralSettings
     {
         public string InputFolderPath { get; set; }
+        public string OutputFolderPath { get; set; }
         public string ElasticUrl { get; set; }
     }
 }
