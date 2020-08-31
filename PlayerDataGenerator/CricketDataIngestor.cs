@@ -118,7 +118,7 @@ namespace PlayerDataGenerator
                             }
 
                             stringBuilder.AppendLine(
-                                $"exception: {e.Message}, Player Name: {player} + yaml- {file.Name}, search text - {match.MatchInfo.Dates.First().ToString("dd MM YYYY", System.Globalization.CultureInfo.InvariantCulture)} {string.Join(" vs ", match.MatchInfo.Teams)} ");
+                                $"exception: {e.Message}, Player Name: {player} + yaml- {file.Name}, search text - {match.MatchInfo.Dates.First().ToString("dd MMM yyyy", System.Globalization.CultureInfo.InvariantCulture)} {string.Join(" vs ", match.MatchInfo.Teams)} ");
                         }
 
                     }
