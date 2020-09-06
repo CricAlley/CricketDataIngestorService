@@ -1,5 +1,5 @@
 #!/bin/bash
-
+InputFolderPath="$1"
 if [ -d "$(HOME)/$(InputFolderPath)/" ]; then sudo rm -R $(HOME)/$(InputFolderPath)/; fi
 
 sudo mkdir -p $(HOME)/$(InputFolderPath)/Temp/
@@ -32,4 +32,3 @@ wget -P $(HOME)/$(InputFolderPath)/Temp https://cricsheet.org/downloads/ntb_male
 unzip $(HOME)/$(InputFolderPath)/Temp/ntb_male.zip -d $(HOME)/$(InputFolderPath)/ntb_male
 
 rm -R $(HOME)/$(InputFolderPath)/Temp/
-
