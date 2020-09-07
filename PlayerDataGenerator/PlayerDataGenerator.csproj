@@ -6,10 +6,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="runElasticIngestion.sh" />
     <None Remove="stagecricketdata.sh" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="runElasticIngestion.sh">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="stagecricketdata.sh">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
