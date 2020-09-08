@@ -137,7 +137,7 @@ namespace PlayerDataGenerator
             stringBuilder.AppendLine("      THROW");
             stringBuilder.AppendLine("END CATCH");
 
-            WriteToFile($"{_generalSettings.OutputFolderPath}\\{Constants.PlayerScript}", stringBuilder.ToString());
+            WriteToFile($"{_generalSettings.OutputFolderPath}/{Constants.PlayerScript}", stringBuilder.ToString());
 
             Console.WriteLine("Player Data script is generated.");
         }

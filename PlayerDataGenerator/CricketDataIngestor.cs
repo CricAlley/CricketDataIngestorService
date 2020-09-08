@@ -128,8 +128,8 @@ namespace PlayerDataGenerator
 
             stringBuilder.Append($"Unable to Map {count} Players ");
 
-            var failedPlayerpath = $"{_generalSettings.OutputFolderPath}\\{Constants.FailedPlayerFile}";
-            var includedTeamsFilePath = $"{_generalSettings.OutputFolderPath}\\{Constants.IncludedTeams}";
+            var failedPlayerpath = $"{_generalSettings.OutputFolderPath}/{Constants.FailedPlayerFile}";
+            var includedTeamsFilePath = $"{_generalSettings.OutputFolderPath}/{Constants.IncludedTeams}";
             WriteToFile(failedPlayerpath, stringBuilder.ToString());
             WriteToFile(includedTeamsFilePath, teamsBuilder.ToString());           
             Console.WriteLine("Extraction Complete");
