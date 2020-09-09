@@ -141,7 +141,7 @@ namespace PlayerDataGenerator
             if (_emailSender.IsMailSettingsConfigured())
             {
                 _emailSender.Email(fplayer, Constants.FailedPlayerFile);
-                _emailSender.Email(includedTeamsFilePath, Constants.IncludedTeams);
+                _emailSender.Email(includedTeams, Constants.IncludedTeams);
             }
             Console.WriteLine("Extraction Complete");
 
