@@ -45,6 +45,7 @@ namespace PlayerDataGenerator
             services.AddDbContext<CricketContext>(options => options.UseSqlServer(connectionString));
             services.AddScoped<ICricketDataIngestor, CricketDataIngestor>();
             services.AddScoped<IPlayerScriptGenerator, PlayerScriptGenerator>();
+            services.AddScoped<IEmailSender, EmailSender>();
             services.AddSingleton(generalSettings);
             services.AddScoped<ConsoleApplication>();
             services.AddAutoMapper(new[] { Assembly.GetExecutingAssembly() });

@@ -28,6 +28,7 @@ namespace PlayerDataGenerator
         private readonly CricketContext _playerContext;
         private readonly IPlayerScriptGenerator _playerScriptGenerator;
         private readonly IMapper _mapper;
+        private readonly IEmailSender _emailSender;
         private readonly Dictionary<string, Player> _players;
         private readonly Dictionary<string, string> _failedPlayers = new Dictionary<string, string>();
         private List<ExcludedTeam> _excludedTeams;
@@ -35,12 +36,13 @@ namespace PlayerDataGenerator
         private List<PlayerAliasMapping> _playerAliases;
         private List<string> _teams = new List<string>();
 
-        public CricketDataIngestor(GeneralSettings generalSettings, CricketContext playerContext, IPlayerScriptGenerator playerScriptGenerator, IMapper mapper)
+        public CricketDataIngestor(GeneralSettings generalSettings, CricketContext playerContext, IPlayerScriptGenerator playerScriptGenerator, IMapper mapper, IEmailSender emailSender)
         {
             _generalSettings = generalSettings;
             _playerContext = playerContext;
             _playerScriptGenerator = playerScriptGenerator;
             _mapper = mapper;
+            _emailSender = emailSender;
             _players = new Dictionary<string, Player>();
 
             _excludedTeams = playerContext.ExcludedTeams.ToList();
@@ -130,8 +132,17 @@ namespace PlayerDataGenerator
 
             var failedPlayerpath = $"{_generalSettings.OutputFolderPath}/{Constants.FailedPlayerFile}";
             var includedTeamsFilePath = $"{_generalSettings.OutputFolderPath}/{Constants.IncludedTeams}";
-            WriteToFile(failedPlayerpath, stringBuilder.ToString());
-            WriteToFile(includedTeamsFilePath, teamsBuilder.ToString());           
+
+            var fplayer = stringBuilder.ToString();
+            var includedTeams = teamsBuilder.ToString();
+            WriteToFile(failedPlayerpath, fplayer);
+            WriteToFile(includedTeamsFilePath, includedTeams);
+
+            if (_emailSender.IsMailSettingsConfigured())
+            {
+                _emailSender.Email(fplayer, Constants.FailedPlayerFile);
+                _emailSender.Email(includedTeamsFilePath, Constants.IncludedTeams);
+            }
             Console.WriteLine("Extraction Complete");
 
             if (_failedPlayers.Count > 0)

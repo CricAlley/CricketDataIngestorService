@@ -17,11 +17,13 @@ namespace PlayerDataGenerator
     {
         private readonly CricketContext _playerContext;
         private readonly GeneralSettings _generalSettings;
+        private readonly IEmailSender _emailSender;
 
-        public PlayerScriptGenerator(CricketContext playerContext, GeneralSettings generalSettings)
+        public PlayerScriptGenerator(CricketContext playerContext, GeneralSettings generalSettings, IEmailSender emailSender)
         {
             _playerContext = playerContext;
             _generalSettings = generalSettings;
+            _emailSender = emailSender;
         }
         public void GenerateScript()
         {
@@ -137,7 +139,14 @@ namespace PlayerDataGenerator
             stringBuilder.AppendLine("      THROW");
             stringBuilder.AppendLine("END CATCH");
 
-            WriteToFile($"{_generalSettings.OutputFolderPath}/{Constants.PlayerScript}", stringBuilder.ToString());
+            string data = stringBuilder.ToString();
+
+            WriteToFile($"{_generalSettings.OutputFolderPath}/{Constants.PlayerScript}", data);
+
+            if (_emailSender.IsMailSettingsConfigured())
+            {
+                _emailSender.Email(data, Constants.PlayerScript);
+            }
 
             Console.WriteLine("Player Data script is generated.");
         }
