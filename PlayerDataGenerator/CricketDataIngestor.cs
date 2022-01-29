@@ -47,14 +47,7 @@ namespace PlayerDataGenerator
 
             _excludedTeams = playerContext.ExcludedTeams.ToList();
             _dbPlayers = playerContext.Players.ToList();
-            _playerAliases = playerContext.PlayerAliasMapping.ToList();
-
-            //bbl_male
-            //ipl_male
-            //ntb_male
-            //odis_male
-            //t20s_male
-            // cpl_male
+            _playerAliases = playerContext.PlayerAliasMapping.ToList();            
         }
 
         public void ExtractPlayers()
@@ -71,20 +64,21 @@ namespace PlayerDataGenerator
 
             foreach (var directory in directoryInfos)
             {
-                var files = directory.GetFiles("*.yaml");
+                var files = directory.GetFiles("*.json");
 
                 foreach (var file in files)
                 {
-                    var match = yamlParser.Parse(file.FullName);
+                    var jsonParser = new JsonParser.JsonParser();
+                    var match = jsonParser.Parse(file.FullName);
 
-                    var isBothTeamsExcluded = match.MatchInfo.Teams.All(s => _excludedTeams.Any(t => t.TeamName.Equals(s, StringComparison.InvariantCultureIgnoreCase)));
+                    var isBothTeamsExcluded = match.Info.Teams.All(s => _excludedTeams.Any(t => t.TeamName.Equals(s, StringComparison.InvariantCultureIgnoreCase)));
 
                     if (isBothTeamsExcluded)
                     {
                         continue;
                     }
 
-                    foreach (var team in match.MatchInfo.Teams)
+                    foreach (var team in match.Info.Teams)
                     {
                         if (_teams.All(t => t != team))
                         {
@@ -93,8 +87,7 @@ namespace PlayerDataGenerator
                         }
                     }
 
-
-                    var players = match.GetPlayers();
+                    var players = match.Players;
 
                     foreach (var player in players)
                     {
@@ -121,7 +114,7 @@ namespace PlayerDataGenerator
                             }
 
                             stringBuilder.AppendLine(
-                                $"exception: {e.Message}, Player Name: {player} + yaml- {file.Name}, search text - {match.MatchInfo.Dates.First().ToString("dd MMM yyyy", System.Globalization.CultureInfo.InvariantCulture)} {string.Join(" vs ", match.MatchInfo.Teams)} ");
+                                $"exception: {e.Message}, Player Name: {player} + yaml- {file.Name}, search text - {match.Info.Dates.First()} {string.Join(" vs ", match.Info.Teams)} ");
                         }
 
                     }
@@ -147,7 +140,7 @@ namespace PlayerDataGenerator
 
             if (_failedPlayers.Count > 0)
             {
-                throw new Exception($"there are {count} unmapped players. Please Map them.");
+                throw new Exception($"there are {count} unmapped players. Please Map them."); 
             }
             else
             {
@@ -411,6 +404,5 @@ namespace PlayerDataGenerator
                    string.Join("", matchInfo.Teams.Select(s => s.Replace(" ", ""))) +
                    file.Name;
         }
-
     }
 }
