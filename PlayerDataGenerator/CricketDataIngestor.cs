@@ -57,7 +57,7 @@ namespace PlayerDataGenerator
 
             var directoryInfos = directoryInfo.GetDirectories();
             var yamlParser = new YamlParser.YamlParser();
-            var stringBuilder = new StringBuilder();
+            var failedPlayerSB = new StringBuilder();
             var teamsBuilder = new StringBuilder();
 
             int count = 0;
@@ -91,42 +91,43 @@ namespace PlayerDataGenerator
 
                     foreach (var player in players)
                     {
+                        var playerName = player.Value.Name;
                         try
                         {
-                            UpdatePlayer(player);
+                            UpdatePlayer(playerName);
                         }
                         catch (Exception e)
                         {
-                            if (_failedPlayers.ContainsKey(player))
+                            if (_failedPlayers.ContainsKey(playerName))
                             {
                                 continue;
                             }
 
                             count++;
 
-                            if (_players.ContainsKey(player))
+                            if (_players.ContainsKey(playerName))
                             {
-                                _failedPlayers.Add(player, _players[player].FullName);
+                                _failedPlayers.Add(playerName, _players[playerName].FullName);
                             }
                             else
                             {
-                                _failedPlayers.Add(player, player);
+                                _failedPlayers.Add(playerName, playerName);
                             }
 
-                            stringBuilder.AppendLine(
-                                $"exception: {e.Message}, Player Name: {player} + yaml- {file.Name}, search text - {match.Info.Dates.First()} {string.Join(" vs ", match.Info.Teams)} ");
+                            failedPlayerSB.AppendLine(
+                                $"{e.Message},{playerName}, {file.Name},{player.Value.Identifier} ,search text - {match.Info.Dates.First()} {string.Join(" vs ", match.Info.Teams)} ");
                         }
 
                     }
                 }
             }
 
-            stringBuilder.Append($"Unable to Map {count} Players ");
+            failedPlayerSB.Append($"Unable to Map {count} Players ");
 
             var failedPlayerpath = $"{_generalSettings.OutputFolderPath}/{Constants.FailedPlayerFile}";
             var includedTeamsFilePath = $"{_generalSettings.OutputFolderPath}/{Constants.IncludedTeams}";
 
-            var fplayer = stringBuilder.ToString();
+            var fplayer = failedPlayerSB.ToString();
             var includedTeams = teamsBuilder.ToString();
             WriteToFile(failedPlayerpath, fplayer);
             WriteToFile(includedTeamsFilePath, includedTeams);

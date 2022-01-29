@@ -30,7 +30,12 @@ namespace PlayerDataGenerator.JsonParser
 
             foreach (var people in Info.Registry.People)
             {
-                var player = new Player { Name = people.Key, Uid = people.Value, Team = GetTeam(people.Key) };
+                if (Info.Officials.Contains(people.Key))
+                {
+                    continue;
+                }
+
+                var player = new Player { Name = people.Key, Identifier = people.Value, Team = GetTeam(people.Key) };
                 teamPlayers.Add(player.Name, player);
             }            
 
