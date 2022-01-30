@@ -87,14 +87,12 @@ namespace PlayerDataGenerator
                         }
                     }
 
-                    var players = match.Players;
-
-                    foreach (var player in players)
+                    foreach (var player in match.Players)
                     {
                         var playerName = player.Value.Name;
                         try
                         {
-                            UpdatePlayer(playerName);
+                            UpdatePlayer(player.Value);
                         }
                         catch (Exception e)
                         {
@@ -147,7 +145,7 @@ namespace PlayerDataGenerator
             {
                 _playerScriptGenerator.GenerateScript();
             }
-        }
+        }        
 
         private static void WriteToFile(string failedPlayerpath, string content)
         {
@@ -156,8 +154,23 @@ namespace PlayerDataGenerator
             File.WriteAllText(file.FullName, content);
         }
 
-        private void UpdatePlayer(string player)
+        private void UpdatePlayer(JsonParser.MatchPlayer value)
         {
+            var identifiedPlayer = _dbPlayers.SingleOrDefault(p => p.Identifier != null && p.Identifier.Equals(value.Identifier));
+
+            if(identifiedPlayer != null)
+            {
+                if (identifiedPlayer.CricsheetName == null || !identifiedPlayer.CricsheetName.Equals(value.Name))
+                {
+                    identifiedPlayer.CricsheetName = value.Name;
+                    _playerContext.SaveChanges();
+                }
+
+                return;
+            }
+
+            var player = value.Name;
+
             player = player.Replace(" (sub)", "");
 
             if (_players.ContainsKey(player) || _failedPlayers.ContainsKey(player) || _playerAliases.Any(pa => pa.CricsheetName.Equals(player, StringComparison.InvariantCultureIgnoreCase))) return;
@@ -185,7 +198,6 @@ namespace PlayerDataGenerator
                 if (!dbPlayers.Any())
                 {
                     throw new Exception("Player not present");
-
                 }
 
                 foreach (var dbPlayer in dbPlayers)
@@ -239,6 +251,7 @@ namespace PlayerDataGenerator
                     var dbPlayer = foundPlayers.First();
                     _players.Add(player, dbPlayer);
                     dbPlayer.CricsheetName = player;
+                    dbPlayer.Identifier = value.Identifier;                    
                 }
             }
             else
@@ -281,6 +294,7 @@ namespace PlayerDataGenerator
                     var dbPlayer = foundPlayers.First();
                     _players.Add(player, dbPlayer);
                     dbPlayer.CricsheetName = player;
+                    dbPlayer.Identifier = value.Identifier;
                 }
             }
 

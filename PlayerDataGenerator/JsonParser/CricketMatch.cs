@@ -5,13 +5,13 @@ namespace PlayerDataGenerator.JsonParser
 {
     public class CricketMatch
     {
-        private Dictionary<string, Player> _player;
+        private Dictionary<string, MatchPlayer> _player;
         public Meta Meta { get; set; }
         public Info Info { get; set; }
         public List<Innings> Innings { get; set; }
 
         [JsonIgnore]
-        public Dictionary<string, Player> Players
+        public Dictionary<string, MatchPlayer> Players
         {
             get
             {
@@ -24,18 +24,18 @@ namespace PlayerDataGenerator.JsonParser
             }
         }
 
-        private Dictionary<string, Player> GetPlayers()
+        private Dictionary<string, MatchPlayer> GetPlayers()
         {
-            var teamPlayers = new Dictionary<string, Player>();
+            var teamPlayers = new Dictionary<string, MatchPlayer>();
 
             foreach (var people in Info.Registry.People)
             {
-                if (Info.Officials.Contains(people.Key))
+                if (Info.Officials != null && Info.Officials.Contains(people.Key))
                 {
                     continue;
                 }
 
-                var player = new Player { Name = people.Key, Identifier = people.Value, Team = GetTeam(people.Key) };
+                var player = new MatchPlayer { Name = people.Key, Identifier = people.Value, Team = GetTeam(people.Key) };
                 teamPlayers.Add(player.Name, player);
             }            
 

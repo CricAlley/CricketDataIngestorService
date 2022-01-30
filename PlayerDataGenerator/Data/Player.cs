@@ -17,5 +17,6 @@ namespace PlayerDataGenerator.Data
         public bool IsActive { get; set; }
 
         public string CricsheetName { get; set; }
+        public string Identifier { get; set; }
     }
 }

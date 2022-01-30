@@ -46,10 +46,11 @@ namespace PlayerDataGenerator
             stringBuilder.AppendLine("  [CricInfoId]    INT             NOT NULL,");
             stringBuilder.AppendLine("  [IsActive]      BIT             DEFAULT((1)),");
             stringBuilder.AppendLine("  [CricsheetName] NVARCHAR(MAX)   NULL,");
+            stringBuilder.AppendLine("  [Identifier] NVARCHAR(MAX)   NULL,");
             stringBuilder.AppendLine(");");
             stringBuilder.AppendLine();
             stringBuilder.AppendLine(
-                "INSERT INTO #players	([Name], [FullName], [PlayingRole], [DateOfBirth], [BattingStyle], [BowlingStyle], [CricInfoId], [IsActive], [CricsheetName])");
+                "INSERT INTO #players	([Name], [FullName], [PlayingRole], [DateOfBirth], [BattingStyle], [BowlingStyle], [CricInfoId], [IsActive], [CricsheetName], [Identifier])");
 
             var lastPlayerIndex = players.Count() - 1;
 
@@ -59,34 +60,62 @@ namespace PlayerDataGenerator
 
                 var canSplitBatch = index % 1000 == 0;
                 var cricSheetName = player.CricsheetName == null ? "NULL" : $"'{player.CricsheetName.Replace("'", "''")}'";
+                var identifier = player.Identifier == null ? null : $"'{player.Identifier}'";
                 var dateOfBirth = player.DateOfBirth == null ? "NULL" : $"'{player.DateOfBirth.Value.ToString("MM/dd/yyyy", System.Globalization.CultureInfo.InvariantCulture)}'";
+
                 if (canSplitBatch)
                 {
-
-                    stringBuilder.AppendLine(
-                        $@"SELECT '{player.Name.Replace("'", "''")}' AS Name, '{player.FullName.Replace("'", "''")}' AS FullName, '{player.PlayingRole}' AS PlayingRole, {dateOfBirth} AS DateofBirth," +
-                        $@" '{player.BattingStyle}' AS BattingStyle, '{player.BowlingStyle}' AS BowlingStyle, {player.CricInfoId} AS CricInfoId, 1 AS IsActive, {cricSheetName} AS CricsheetName");
+                    if(player.Identifier == null)
+                    {
+                        stringBuilder.AppendLine(
+                       $@"SELECT '{player.Name.Replace("'", "''")}' AS Name, '{player.FullName.Replace("'", "''")}' AS FullName, '{player.PlayingRole}' AS PlayingRole, {dateOfBirth} AS DateofBirth," +
+                       $@" '{player.BattingStyle}' AS BattingStyle, '{player.BowlingStyle}' AS BowlingStyle, {player.CricInfoId} AS CricInfoId, 1 AS IsActive, {cricSheetName} AS CricsheetName, NULL AS Identifier");
+                    }
+                    else
+                    {
+                        stringBuilder.AppendLine(
+                       $@"SELECT '{player.Name.Replace("'", "''")}' AS Name, '{player.FullName.Replace("'", "''")}' AS FullName, '{player.PlayingRole}' AS PlayingRole, {dateOfBirth} AS DateofBirth," +
+                       $@" '{player.BattingStyle}' AS BattingStyle, '{player.BowlingStyle}' AS BowlingStyle, {player.CricInfoId} AS CricInfoId, 1 AS IsActive, {cricSheetName} AS CricsheetName, {identifier} AS Identifier");
+                    }
 
                     stringBuilder.AppendLine("Go");
 
                     stringBuilder.AppendLine();
 
                     stringBuilder.AppendLine(
-                        "INSERT INTO #players	([Name], [FullName], [PlayingRole], [DateOfBirth], [BattingStyle], [BowlingStyle], [CricInfoId], [IsActive], [CricsheetName])");
+                        "INSERT INTO #players	([Name], [FullName], [PlayingRole], [DateOfBirth], [BattingStyle], [BowlingStyle], [CricInfoId], [IsActive], [CricsheetName], [Identifier])");
                 }
                 else if (index == lastPlayerIndex)
                 {
 
-                    stringBuilder.AppendLine(
-                        $@"SELECT '{player.Name.Replace("'", "''")}' AS Name, '{player.FullName.Replace("'", "''")}' AS FullName, '{player.PlayingRole}' AS PlayingRole, {dateOfBirth} AS DateofBirth," +
-                        $@" '{player.BattingStyle}' AS BattingStyle, '{player.BowlingStyle}' AS BowlingStyle, {player.CricInfoId} AS CricInfoId, 1 AS IsActive, {cricSheetName} AS CricsheetName");
+                    if (player.Identifier == null)
+                    {
+                        stringBuilder.AppendLine(
+                       $@"SELECT '{player.Name.Replace("'", "''")}' AS Name, '{player.FullName.Replace("'", "''")}' AS FullName, '{player.PlayingRole}' AS PlayingRole, {dateOfBirth} AS DateofBirth," +
+                       $@" '{player.BattingStyle}' AS BattingStyle, '{player.BowlingStyle}' AS BowlingStyle, {player.CricInfoId} AS CricInfoId, 1 AS IsActive, {cricSheetName} AS CricsheetName, NULL AS Identifier");
+                    }
+                    else
+                    {
+                        stringBuilder.AppendLine(
+                       $@"SELECT '{player.Name.Replace("'", "''")}' AS Name, '{player.FullName.Replace("'", "''")}' AS FullName, '{player.PlayingRole}' AS PlayingRole, {dateOfBirth} AS DateofBirth," +
+                       $@" '{player.BattingStyle}' AS BattingStyle, '{player.BowlingStyle}' AS BowlingStyle, {player.CricInfoId} AS CricInfoId, 1 AS IsActive, {cricSheetName} AS CricsheetName, {identifier} AS Identifier");
+                    }
 
                 }
                 else
                 {
-                    stringBuilder.AppendLine(
-                        $@"SELECT '{player.Name.Replace("'", "''")}' AS Name, '{player.FullName.Replace("'", "''")}' AS FullName, '{player.PlayingRole}' AS PlayingRole, {dateOfBirth} AS DateofBirth," +
-                        $@" '{player.BattingStyle}' AS BattingStyle, '{player.BowlingStyle}' AS BowlingStyle, {player.CricInfoId} AS CricInfoId, 1 AS IsActive, {cricSheetName} AS CricsheetName UNION ALL");
+                    if (player.Identifier == null)
+                    {
+                        stringBuilder.AppendLine(
+                       $@"SELECT '{player.Name.Replace("'", "''")}' AS Name, '{player.FullName.Replace("'", "''")}' AS FullName, '{player.PlayingRole}' AS PlayingRole, {dateOfBirth} AS DateofBirth," +
+                       $@" '{player.BattingStyle}' AS BattingStyle, '{player.BowlingStyle}' AS BowlingStyle, {player.CricInfoId} AS CricInfoId, 1 AS IsActive, {cricSheetName} AS CricsheetName, NULL AS Identifier UNION ALL");
+                    }
+                    else
+                    {
+                        stringBuilder.AppendLine(
+                       $@"SELECT '{player.Name.Replace("'", "''")}' AS Name, '{player.FullName.Replace("'", "''")}' AS FullName, '{player.PlayingRole}' AS PlayingRole, {dateOfBirth} AS DateofBirth," +
+                       $@" '{player.BattingStyle}' AS BattingStyle, '{player.BowlingStyle}' AS BowlingStyle, {player.CricInfoId} AS CricInfoId, 1 AS IsActive, {cricSheetName} AS CricsheetName, {identifier} AS Identifier UNION ALL");
+                    }
                 }
             }
 
@@ -109,6 +138,7 @@ namespace PlayerDataGenerator
             stringBuilder.AppendLine("                      , TARGET.BowlingStyle = SOURCE.BowlingStyle");
             stringBuilder.AppendLine("                      , TARGET.CricInfoId = SOURCE.CricInfoId");
             stringBuilder.AppendLine("                      , TARGET.IsActive = SOURCE.IsActive");
+            stringBuilder.AppendLine("                      , TARGET.Identifier = SOURCE.Identifier");
             stringBuilder.AppendLine("              WHEN NOT MATCHED BY TARGET");
             stringBuilder.AppendLine("              THEN");
             stringBuilder.AppendLine("                  INSERT(Name");
@@ -119,6 +149,7 @@ namespace PlayerDataGenerator
             stringBuilder.AppendLine("                        , BowlingStyle");
             stringBuilder.AppendLine("                        , CricInfoId");
             stringBuilder.AppendLine("                        , IsActive");
+            stringBuilder.AppendLine("                        , Identifier");
             stringBuilder.AppendLine("                        , CricsheetName)");
             stringBuilder.AppendLine("                  VALUES(SOURCE.Name");
             stringBuilder.AppendLine("                        , SOURCE.FullName");
@@ -128,6 +159,7 @@ namespace PlayerDataGenerator
             stringBuilder.AppendLine("                        , SOURCE.BowlingStyle");
             stringBuilder.AppendLine("                        , SOURCE.CricInfoId");
             stringBuilder.AppendLine("                        , SOURCE.IsActive");
+            stringBuilder.AppendLine("                        , SOURCE.Identifier");
             stringBuilder.AppendLine("                        , SOURCE.CricsheetName);");
             stringBuilder.AppendLine("");
             stringBuilder.AppendLine("");

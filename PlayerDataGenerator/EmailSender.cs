@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Net;
 using System.Net.Mail;
 
@@ -22,6 +23,12 @@ namespace PlayerDataGenerator
         {
             try
             {
+                using var ms = new MemoryStream();                
+                TextWriter tw = new StreamWriter(ms);
+                tw.Write(mailText);
+                tw.Flush();
+                ms.Position = 0;                            
+                
                 using var smtp = new SmtpClient();
                 using var message = new MailMessage();
                 message.From = new MailAddress(_settings.From);
@@ -34,6 +41,7 @@ namespace PlayerDataGenerator
                 message.Priority = MailPriority.High;
                 message.IsBodyHtml = false; 
                 message.Body = mailText;
+                message.Attachments.Add(new Attachment(ms, subject));
                 smtp.Port = 587;
                 smtp.Host = "smtp.gmail.com"; 
                 smtp.EnableSsl = true;
