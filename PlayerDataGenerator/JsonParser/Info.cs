@@ -33,7 +33,7 @@ namespace PlayerDataGenerator.JsonParser
         public int Overs { get; set; }
 
         [JsonProperty("player_of_match")]
-        public List<string> PlayerOfMatch { get; set; }
+        public List<string> PlayerOfTheMatch { get; set; }
 
         [JsonProperty("players")]
         public Dictionary<string, List<string>> Players { get; set; }

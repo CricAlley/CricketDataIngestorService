@@ -12,5 +12,6 @@ namespace ElasticRepository.Entities
         public int CricInfoId { get; set; }
         public string CricsheetName { get; set; }
         public string Team { get; set; }
+        public string Identifier { get; set; }
     }
 }

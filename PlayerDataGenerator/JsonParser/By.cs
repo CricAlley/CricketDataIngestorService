@@ -13,6 +13,4 @@ namespace PlayerDataGenerator.JsonParser
         [JsonProperty("innings")]
         public int Innings { get; set; }
     }
-
-
 }

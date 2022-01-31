@@ -8,7 +8,8 @@ namespace ElasticRepository.Entities
         public int Count => 1;
 
         public string PlayerOut { get; set; }
-        public List<string> Fielders { get; set; }
+        public Player PlayerOutPlayer { get; set; }
+        public List<Fielder> Fielders { get; set; }
         public string Kind { get; set; }
 
         public int CaughtCount

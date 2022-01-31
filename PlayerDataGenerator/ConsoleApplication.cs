@@ -12,7 +12,7 @@
         public void Run()
         {
             _cricketDataIngestor.ExtractPlayers();
-           // _cricketDataIngestor.IngestMatchData();
+            _cricketDataIngestor.IngestMatchData();
         }
     }
 }

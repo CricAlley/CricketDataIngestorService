@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -10,7 +11,7 @@ using AutoMapper;
 using ElasticRepository;
 
 using PlayerDataGenerator.Data;
-using PlayerDataGenerator.YamlParser;
+using PlayerDataGenerator.JsonParser;
 
 using Elastic = ElasticRepository.Entities;
 
@@ -307,15 +308,14 @@ namespace PlayerDataGenerator
             var directoryInfo = new DirectoryInfo(_generalSettings.InputFolderPath);
 
             var directoryInfos = directoryInfo.GetDirectories();
-            var yamlParser = new YamlParser.YamlParser();
+            var jsonParser = new JsonParser.JsonParser();
             var elasticClient = new ElasticClientProvider().GetElasticClient(_generalSettings.ElasticUrl);
             string indexName;
 
 
             foreach (var directory in directoryInfos)
             {
-                var files = directory.GetFiles("*.yaml");
-
+                var files = directory.GetFiles("*.json");
 
                 indexName = directory.Name;
                 elasticClient.Indices.Delete(indexName);
@@ -324,9 +324,9 @@ namespace PlayerDataGenerator
 
                 foreach (var file in files)
                 {
-                    var match = yamlParser.Parse(file.FullName);
+                    var match = jsonParser.Parse(file.FullName);
 
-                    var isBothTeamsExcluded = match.MatchInfo.Teams.All(s => _excludedTeams.Any(t => t.TeamName.Equals(s, StringComparison.InvariantCultureIgnoreCase)));
+                    var isBothTeamsExcluded = match.Info.Teams.All(s => _excludedTeams.Any(t => t.TeamName.Equals(s, StringComparison.InvariantCultureIgnoreCase)));
 
                     if (isBothTeamsExcluded)
                     {
@@ -335,50 +335,64 @@ namespace PlayerDataGenerator
 
                     var balls = new List<Elastic.Ball>();
 
-                    var matchId = GetMatchId(match.MatchInfo, file);
+                    var matchId = Guid.NewGuid().ToString();                   
 
-                    foreach (var inning in match.Innings)
+                    for (int i = 0; i < match.Innings.Count; i++)
                     {
-                        var inningValue = inning.Values.First();
-                        var battingTeam = inningValue.Team;
-                        var bowlingTeam = match.MatchInfo.Teams.First(t => !t.Equals(inningValue.Team));
+                        var inning = match.Innings[i];
+                        var battingTeam = inning.Team;
+                        var bowlingTeam = match.Info.Teams.First(t => !t.Equals(inning.Team));
 
-                        foreach (var delivery in inningValue.Deliveries)
+                        var inningsId = Guid.NewGuid().ToString();                       
+
+                        foreach (var over in inning.Overs)
                         {
-                            var deliveryValue = delivery.Values.First();
-                            var ball = _mapper.Map<Elastic.Ball>(deliveryValue);
-                            var bowler = GetPlayer(deliveryValue.Bowler);
-                            var elasticBowler = _mapper.Map<Elastic.Player>(bowler);
-                            elasticBowler.Team = bowlingTeam;
-                            ball.Bowler = elasticBowler;
+                            var overId = Guid.NewGuid().ToString();
+                            for (int j = 0; j < over.Deliveries.Length; j++)
+                            {
+                                var ballNumber = j + 1;
 
-                            var batsman = GetPlayer(deliveryValue.Batsman); ;
-                            var elasticBatsman = _mapper.Map<Elastic.Player>(batsman);
-                            elasticBatsman.Team = battingTeam;
-                            ball.Batsman = elasticBatsman;
+                                var delivery = over.Deliveries[j];
+                                var ball = _mapper.Map<Elastic.Ball>(delivery);
+                                var bowler = GetPlayer(match.Players[delivery.Bowler]);
+                                var elasticBowler = _mapper.Map<Elastic.Player>(bowler);
+                                elasticBowler.Team = bowlingTeam;
+                                ball.Bowler = elasticBowler;
 
-                            var nonStriker = GetPlayer(deliveryValue.NonStriker); ;
-                            var elasticNonStriker = _mapper.Map<Elastic.Player>(nonStriker);
-                            elasticNonStriker.Team = battingTeam;
-                            ball.NonStriker = elasticBatsman;
+                                var batsman = GetPlayer(match.Players[delivery.Batter]); ;
+                                var elasticBatsman = _mapper.Map<Elastic.Player>(batsman);
+                                elasticBatsman.Team = battingTeam;
+                                ball.Batsman = elasticBatsman;
 
-                            ball.DeliveryKey = delivery.Keys.First();
+                                var nonStriker = GetPlayer(match.Players[delivery.NonStriker]); ;
+                                var elasticNonStriker = _mapper.Map<Elastic.Player>(nonStriker);
+                                elasticNonStriker.Team = battingTeam;
+                                ball.NonStriker = elasticNonStriker;
 
-                            var innings = _mapper.Map<Elastic.Inning>(inningValue);
-                            var matchInfo = match.MatchInfo;
+                                var innings = _mapper.Map<Elastic.Inning>(inning);
+                                innings.Number = i + 1;
+                                ball.Inning = innings;
 
-                            innings.Innings = inning.First().Key;
-                            innings.BowlingTeam = matchInfo.Teams.First(s => s != innings.BattingTeam);
-                            ball.Inning = innings;
+                                ball.BallNumber = ballNumber;
+                                ball.BowlingTeam = bowlingTeam;
+                                ball.BattingTeam = battingTeam;
+                                ball.MatchId = matchId;
+                                ball.InningsId = inningsId;
+                                ball.OverId = overId;
+                                ball.IsPowerPlay = IsPowerPlay(ballNumber,over.OverNumber, inning);
+                                ball.IsSuperOver = inning.SuperOver;
+                                ball.Date = Convert.ToDateTime(match.Info.Dates.First());
+                                _mapper.Map(over, ball);
+                                _mapper.Map(match.Info, ball);
+                                _mapper.Map(inning, ball);
+                                _mapper.Map(delivery.Review, ball);
 
-                            var ballMatch = _mapper.Map<Elastic.Match>(matchInfo);
-                            ball.Match = ballMatch;
-                            ball.Match.MatchId = matchId;
-                            var inningsId = matchId + innings.Innings;
-                            ball.Inning.InningsId = inningsId;
-                            ball.OverId = inningsId + ball.Over;
+                                var ballMatch = _mapper.Map<Elastic.Match>(match.Info);
+                                ball.Match = ballMatch;
+                                PopulateWicketPlayers(match, ball);
 
-                            balls.Add(ball);
+                                balls.Add(ball);
+                            }
                         }
                     }
 
@@ -390,34 +404,69 @@ namespace PlayerDataGenerator
             Console.WriteLine("Elastic Ingestion complete");
         }
 
-        private Player GetPlayer(string playerName)
+        private bool IsPowerPlay(int ballNumber, int overNumber, Innings inning)
+        {
+            if(inning.Powerplays == null)
+            {
+                return false;
+            }
+
+            var ball = ToDouble(overNumber, ballNumber);
+            foreach (var powerplay in inning.Powerplays)
+            {
+                if (ball >= powerplay.From && ball <= powerplay.To)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public int GetFrac2Digits(decimal d)
+        {
+            var str = d.ToString("0.0", CultureInfo.InvariantCulture);
+            return int.Parse(str[(str.IndexOf('.') + 1)..]);
+        }
+
+        public double ToDouble(int left, int right)
+        {
+            return double.Parse(left.ToString() + "." + right.ToString(),  CultureInfo.InvariantCulture);
+        }
+
+        private void PopulateWicketPlayers(CricketMatch match, Elastic.Ball ball)
+        {
+            foreach (var wicket in ball.Wickets)
+            {
+                wicket.PlayerOutPlayer = _mapper.Map<Elastic.Player>(GetPlayer(match.Players[wicket.PlayerOut]));
+                foreach (var fielder in wicket.Fielders)
+                {
+                    fielder.FielderPlayer = _mapper.Map<Elastic.Player>(GetPlayer(match.Players[fielder.Name]));
+                }
+            }
+        }
+
+        private Player GetPlayer(MatchPlayer matchPlayer)
         {
             
             try
             {
-                Player player = _dbPlayers.SingleOrDefault(p => p.CricsheetName != null && p.CricsheetName.Equals(playerName, StringComparison.InvariantCultureIgnoreCase));
-                if (player == null)
-                {
-                    var playerAliasMapping
-                        = _playerAliases.FirstOrDefault(p => p.CricsheetName.Equals(playerName, StringComparison.InvariantCultureIgnoreCase));
+                Player player = _dbPlayers.Single(p => p.Identifier != null && p.Identifier.Equals(matchPlayer.Identifier, StringComparison.InvariantCultureIgnoreCase));
+                //if (player == null)
+                //{
+                //    var playerAliasMapping
+                //        = _playerAliases.FirstOrDefault(p => p.CricsheetName.Equals(playerName, StringComparison.InvariantCultureIgnoreCase));
 
-                    return _dbPlayers.Single(p => p.CricInfoId == playerAliasMapping.CricInfoId);
-                }
+                //    return _dbPlayers.Single(p => p.CricInfoId == playerAliasMapping.CricInfoId);
+                //}
 
                 return player;
             }
             catch(Exception e)
             {
-                Console.WriteLine($"PlayerName failed : {playerName}. Exception: {e.Message}");
+                Console.WriteLine($"PlayerName failed : {matchPlayer.Name}, {matchPlayer.Identifier}. Exception: {e.Message}");
                 throw;
             }
-        }
-
-        private static string GetMatchId(MatchInfo matchInfo, FileInfo file)
-        {
-            return matchInfo.Dates.First().ToLongDateString() + matchInfo.City +
-                   string.Join("", matchInfo.Teams.Select(s => s.Replace(" ", ""))) +
-                   file.Name;
         }
     }
 }

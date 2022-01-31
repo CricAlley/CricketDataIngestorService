@@ -20,7 +20,7 @@ namespace ElasticRepository.Indices
                     .AutoMap<Match>()
                     .AutoMap<Outcome>()
                     .AutoMap<Toss>()
-                    .AutoMap<BowlOutDeliveries>()
+                    .AutoMap<BowlOut>()
                     .AutoMap<Inning>()
                     .AutoMap<Player>()
                     .AutoMap<Runs>()

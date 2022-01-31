@@ -9,7 +9,7 @@ namespace PlayerDataGenerator.JsonParser
         public int OverNumber { get; set; }
 
         [JsonProperty("deliveries")]
-        public List<Delivery> Deliveries { get; set; }
+        public Delivery[] Deliveries { get; set; }
     }
 
 

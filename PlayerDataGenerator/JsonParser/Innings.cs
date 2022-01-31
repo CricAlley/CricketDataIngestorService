@@ -18,7 +18,7 @@ namespace PlayerDataGenerator.JsonParser
         public Target Target { get; set; }
 
         [JsonProperty("super_over")]
-        public bool? SuperOver { get; set; }
+        public bool SuperOver { get; set; }
 
         [JsonProperty("miscounted_overs")]
         public Dictionary<string, MiscountedOvers> MiscountedOvers { get; set; }

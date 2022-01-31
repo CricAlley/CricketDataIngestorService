@@ -14,13 +14,13 @@ namespace PlayerDataGenerator.JsonParser
         public string Method { get; set; }
 
         [JsonProperty("eliminator")]
-        public string Eliminator { get; set; }
+        public string EliminatorWinner { get; set; }
 
         [JsonProperty("result")]
         public string Result { get; set; }
 
         [JsonProperty("bowl_out")]
-        public string BowlOut { get; set; }
+        public string BowloutWinner { get; set; }
     }
 
 
