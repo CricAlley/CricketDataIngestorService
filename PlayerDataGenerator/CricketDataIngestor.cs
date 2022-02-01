@@ -133,8 +133,12 @@ namespace PlayerDataGenerator
 
             if (_emailSender.IsMailSettingsConfigured())
             {
-                _emailSender.Email(fplayer, Constants.FailedPlayerFile);
-                _emailSender.Email(includedTeams, Constants.IncludedTeams);
+                if(_failedPlayers.Count > 0)
+                {
+                    _emailSender.Email(fplayer, Constants.FailedPlayerFile);
+                }
+
+                // _emailSender.Email(includedTeams, Constants.IncludedTeams);
             }
             Console.WriteLine("Extraction Complete");
 
@@ -142,7 +146,7 @@ namespace PlayerDataGenerator
             {
                 throw new Exception($"there are {count} unmapped players. Please Map them."); 
             }
-            else
+            else if(_generalSettings.GenerateScript.Equals("true"))
             {
                 _playerScriptGenerator.GenerateScript();
             }
@@ -389,7 +393,6 @@ namespace PlayerDataGenerator
 
                                 var ballMatch = _mapper.Map<Elastic.Match>(match.Info);
                                 ball.Match = ballMatch;
-                                PopulateWicketPlayers(match, ball);
 
                                 balls.Add(ball);
                             }
@@ -422,28 +425,10 @@ namespace PlayerDataGenerator
 
             return false;
         }
-
-        public int GetFrac2Digits(decimal d)
-        {
-            var str = d.ToString("0.0", CultureInfo.InvariantCulture);
-            return int.Parse(str[(str.IndexOf('.') + 1)..]);
-        }
-
+        
         public double ToDouble(int left, int right)
         {
             return double.Parse(left.ToString() + "." + right.ToString(),  CultureInfo.InvariantCulture);
-        }
-
-        private void PopulateWicketPlayers(CricketMatch match, Elastic.Ball ball)
-        {
-            foreach (var wicket in ball.Wickets)
-            {
-                wicket.PlayerOutPlayer = _mapper.Map<Elastic.Player>(GetPlayer(match.Players[wicket.PlayerOut]));
-                foreach (var fielder in wicket.Fielders)
-                {
-                    fielder.FielderPlayer = _mapper.Map<Elastic.Player>(GetPlayer(match.Players[fielder.Name]));
-                }
-            }
         }
 
         private Player GetPlayer(MatchPlayer matchPlayer)

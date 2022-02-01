@@ -9,5 +9,6 @@
         public string Code { get; set; }
         public string RequiredTo { get; set; }
         public string OptionalTo { get; set; }
+        public string GenerateScript { get; set; }
     }
 }
