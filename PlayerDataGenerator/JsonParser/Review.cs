@@ -15,6 +15,9 @@ namespace PlayerDataGenerator.JsonParser
 
         [JsonProperty("decision")]
         public string Decision { get; set; }
+        
+        [JsonProperty("type")]
+        public string Type { get; set; }
 
         [JsonProperty("umpires_call")]
         public bool UmpiresCall { get; set; }
